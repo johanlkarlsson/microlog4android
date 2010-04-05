@@ -1,0 +1,16 @@
+defaultTasks 	/* Core */	'microlog4android-core:clean', 'microlog4android-core:build'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'eclipse'
+	
+	repositories {
+		mavenCentral()
+	}
+	
+	sourceCompatibility = 1.5
+	version = '0.0.1'
+}

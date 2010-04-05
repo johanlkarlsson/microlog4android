@@ -1,0 +1,1 @@
+include "microlog4android-core", "microlog4android-appender-appengine", "microlog4android-server-appengine"
