@@ -1,0 +1,2 @@
+gradle cookbook:
+http://communitymapbuilder.org/display/GRADLE/Cookbook#Cookbook-uselocalMaven2cacherepository
