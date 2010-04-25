@@ -1,0 +1,19 @@
+defaultTasks 'clean', 'build'
+
+dependencies {
+	// microlog4android-core
+	compile group: 'com.google.code.microlog4android', name: 'microlog4android-core', version: '0.0.1'
+	
+	// slf4j api
+	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.5.11'
+}
+
+jar {
+	from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+}
+
+jar {
+	manifest {
+		attributes("Implementation-Title": "microlog4android - SLF4J API and Android implementation", "Implementation-Version": version);
+	}
+}
