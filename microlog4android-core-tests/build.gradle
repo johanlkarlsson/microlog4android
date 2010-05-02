@@ -1,0 +1,10 @@
+defaultTasks 'clean', 'test'
+
+dependencies {
+	// microlog4android-core
+	compile fileTree(dir: '../microlog4android-core/build/libs', include:'microlog4android-core*.jar')
+	
+	// test libs
+	compile group: 'junit', name: 'junit', version: '4.8.1'
+	compile group: 'org.mockito', name: 'mockito-core', version: '1.8.4'
+}

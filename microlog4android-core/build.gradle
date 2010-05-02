@@ -1,4 +1,4 @@
-defaultTasks 'clean', 'build'
+defaultTasks 'clean', 'install'
 
 dependencies {
 	compile files(androidSdkPath + '/platforms/android-3/android.jar')

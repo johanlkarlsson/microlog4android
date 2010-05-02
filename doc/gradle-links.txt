@@ -1,2 +1,5 @@
 gradle cookbook:
 http://communitymapbuilder.org/display/GRADLE/Cookbook#Cookbook-uselocalMaven2cacherepository
+
+android plugin:
+http://wiki.github.com/jvoegele/gradle-android-plugin/

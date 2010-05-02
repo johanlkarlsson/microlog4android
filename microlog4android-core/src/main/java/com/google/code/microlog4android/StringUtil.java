@@ -20,8 +20,9 @@ package com.google.code.microlog4android;
  * @author Johan Karlsson
  * 
  */
-public class StringUtil {
-
+public enum StringUtil {
+	;
+	
 	/**
 	 * Extract a partial name of a class name, starting from the end.
 	 * 

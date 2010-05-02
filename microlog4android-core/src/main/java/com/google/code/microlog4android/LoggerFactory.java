@@ -24,7 +24,7 @@ import com.google.code.microlog4android.config.LoggerRepository;
  * 
  */
 public class LoggerFactory {
-
+	
 	/**
 	 * The reference to the underlying logger repository.
 	 */
@@ -32,7 +32,7 @@ public class LoggerFactory {
 			.getInstance();
 
 	/**
-	 * The the un-named logger. This is the classic Microlog method, that is
+	 * The un-named logger. This is the classic Microlog method, that is
 	 * used when no logger hierarchies are wanted.
 	 * 
 	 * @return the <code>Logger</code> object.
@@ -65,7 +65,7 @@ public class LoggerFactory {
 	 *            the <code>Class</code> object to get the name from.
 	 * @return the <code>Logger</code> object.
 	 */
-	public static Logger getLogger(Class clazz) {
+	public static Logger getLogger(Class<?> clazz) {
 		if (clazz == null) {
 			throw new IllegalArgumentException("The clazz must not be null.");
 		}
@@ -77,9 +77,9 @@ public class LoggerFactory {
 	 * Shutdown Microlog.
 	 */
 	public static void shutdown() {
-		System.out.println("Shutting down Microlog");
+//		System.out.println("Shutting down Microlog");
 		loggerRepository.shutdown();
-		System.out.println("Microlog shutdown complete. Bye, bye!");
+//		System.out.println("Microlog shutdown complete. Bye, bye!");
 	}
 
 	/**

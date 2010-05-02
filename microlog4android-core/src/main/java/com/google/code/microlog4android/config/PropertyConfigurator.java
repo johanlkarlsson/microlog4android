@@ -249,23 +249,7 @@ public class PropertyConfigurator {
 	 *         <code>String</code>, <code>null</code> otherwise.
 	 */
 	private Level stringToLevel(String levelString) {
-		Level level = null;
-
-		if (levelString.equalsIgnoreCase(Level.FATAL_STRING)) {
-			level = Level.FATAL;
-		} else if (levelString.equalsIgnoreCase(Level.ERROR_STRING)) {
-			level = Level.ERROR;
-		} else if (levelString.equalsIgnoreCase(Level.WARN_STRING)) {
-			level = Level.WARN;
-		} else if (levelString.equalsIgnoreCase(Level.INFO_STRING)) {
-			level = Level.INFO;
-		} else if (levelString.equalsIgnoreCase(Level.DEBUG_STRING)) {
-			level = Level.DEBUG;
-		} else if (levelString.equalsIgnoreCase(Level.TRACE_STRING)) {
-			level = Level.TRACE;
-		}
-
-		return level;
+		return Level.valueOf(levelString);
 	}
 
 }

@@ -50,8 +50,7 @@ public class CyclicBuffer {
 	 */
 	public CyclicBuffer(int bufferSize) throws IllegalArgumentException {
 		if (bufferSize < 0) {
-			throw new IllegalArgumentException(
-					"Not allowed to resize to a negative size.");
+			throw new IllegalArgumentException("Not allowed to resize to a negative size.");
 		}
 
 		this.bufferSize = bufferSize;
@@ -85,11 +84,9 @@ public class CyclicBuffer {
 	 * @throws IllegalArgumentException
 	 *             if the <code>newSize</code> is negative.
 	 */
-	public synchronized void resize(int newSize)
-			throws IllegalArgumentException {
+	public synchronized void resize(int newSize) throws IllegalArgumentException {
 		if (newSize < 0) {
-			throw new IllegalArgumentException(
-					"Not allowed to resize to a negative size.");
+			throw new IllegalArgumentException("Not allowed to resize to a negative size.");
 		}
 
 		this.bufferSize = newSize;
@@ -105,8 +102,7 @@ public class CyclicBuffer {
 	 */
 	public synchronized void add(Object object) throws IllegalArgumentException {
 		if (object == null) {
-			throw new IllegalArgumentException(
-					"You are not allowed to add an Object that is null.");
+			throw new IllegalArgumentException("You are not allowed to add an Object that is null.");
 		}
 
 		currentIndex = (currentIndex + 1) % buffer.length;
@@ -149,22 +145,12 @@ public class CyclicBuffer {
 	 * Clear the buffer. The buffer size is still the same.
 	 */
 	public synchronized void clear() {
-		Object object = buffer[currentIndex];
-
-		while (object != null) {
-			buffer[currentIndex] = null;
-			currentIndex = currentIndex - 1;
-			length = length - 1;
-
-			if (currentIndex == -1) {
-				currentIndex = bufferSize - 1;
-			}
-
-			object = buffer[currentIndex];
+		if (currentIndex > -1) {
+			buffer = new Object[bufferSize];
+			length = 0;
+			currentIndex = -1;
+			currentOldestIndex = -1;
 		}
-
-		currentIndex = -1;
-		currentOldestIndex = -1;
 	}
 
 	/**

@@ -15,8 +15,8 @@
 package com.google.code.microlog4android;
 
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.code.microlog4android.appender.ConsoleAppender;
 import com.google.code.microlog4android.config.DefaultLoggerRepository;
@@ -49,7 +49,7 @@ public final class Logger {
 
 	private static final StopWatch stopWatch = new StopWatch();
 
-	private final static Vector appenderList = new Vector(4);
+	private final static List<Appender> appenderList = new ArrayList<Appender>(4);
 
 	private static boolean firstLogEvent = true;
 
@@ -149,7 +149,7 @@ public final class Logger {
 		}
 
 		if (!appenderList.contains(appender)) {
-			appenderList.addElement(appender);
+			appenderList.add(appender);
 		}
 	}
 
@@ -172,7 +172,7 @@ public final class Logger {
 				System.err.println("Failed to close appender. " + e);
 			}
 		}
-		appenderList.removeElement(appender);
+		appenderList.remove(appender);
 	}
 
 	/**
@@ -180,9 +180,7 @@ public final class Logger {
 	 * 
 	 */
 	public void removeAllAppenders() {
-		for (Enumeration enumeration = appenderList.elements(); enumeration
-				.hasMoreElements();) {
-			Appender appender = (Appender) enumeration.nextElement();
+		for(Appender appender : appenderList) {
 			if (appender.isLogOpen()) {
 				try {
 					appender.close();
@@ -191,7 +189,7 @@ public final class Logger {
 				}
 			}
 		}
-		appenderList.removeAllElements();
+		appenderList.clear();
 	}
 
 	/**
@@ -211,7 +209,7 @@ public final class Logger {
 	 * @return the appender.
 	 */
 	public Appender getAppender(int index) {
-		return (Appender) appenderList.elementAt(index);
+		return appenderList.get(index);
 	}
 
 	/**
@@ -226,7 +224,7 @@ public final class Logger {
 	 */
 	public void log(Level level, Object message)
 			throws IllegalArgumentException {
-		this.log(level, message, null);
+		log(level, message, null);
 	}
 
 	/**
@@ -247,8 +245,8 @@ public final class Logger {
 			throw new IllegalArgumentException("The level must not be null.");
 		}
 
-		if (getEffectiveLevel().levelValue <= level.levelValue
-				&& level.levelValue > Level.OFF_INT) {
+		if (getEffectiveLevel().toInt() <= level.toInt()
+				&& level.toInt() > Level.OFF_INT) {
 			int nofAppenders = appenderList.size();
 
 			if (firstLogEvent == true) {
@@ -271,8 +269,7 @@ public final class Logger {
 				firstLogEvent = false;
 			}
 
-			for (int index = 0; index < nofAppenders; index++) {
-				Appender appender = (Appender) appenderList.elementAt(index);
+			for(Appender appender : appenderList) {
 				appender.doLog(clientID, name, stopWatch.getCurrentTime(),
 						level, message, t);
 			}
@@ -286,7 +283,7 @@ public final class Logger {
 	 */
 	public boolean isTraceEnabled() {
 		Level effectiveLevel = getEffectiveLevel();
-		return effectiveLevel.levelValue <= Level.TRACE_INT;
+		return effectiveLevel.toInt() <= Level.TRACE_INT;
 	}
 
 	/**
@@ -319,7 +316,7 @@ public final class Logger {
 	 */
 	public boolean isDebugEnabled() {
 		Level effectiveLevel = getEffectiveLevel();
-		return effectiveLevel.levelValue <= Level.DEBUG_INT;
+		return effectiveLevel.toInt() <= Level.DEBUG_INT;
 	}
 
 	/**
@@ -352,7 +349,7 @@ public final class Logger {
 	 */
 	public boolean isInfoEnabled() {
 		Level effectiveLevel = getEffectiveLevel();
-		return effectiveLevel.levelValue <= Level.INFO_INT;
+		return effectiveLevel.toInt() <= Level.INFO_INT;
 	}
 
 	/**
@@ -452,13 +449,12 @@ public final class Logger {
 		StringBuffer stringBuffer = new StringBuffer();
 		stringBuffer.append(super.toString());
 		stringBuffer.append('[');
-
-		int nofAppenders = appenderList.size();
-		for (int index = 0; index < nofAppenders; index++) {
-			Appender appender = (Appender) appenderList.elementAt(index);
+		
+		for(Appender appender : appenderList) {
 			stringBuffer.append(appender);
 			stringBuffer.append(';');
 		}
+
 		stringBuffer.append(']');
 		return stringBuffer.toString();
 	}
@@ -468,23 +464,19 @@ public final class Logger {
 	 * default level.
 	 */
 	public synchronized void resetLogger() {
-		Logger.appenderList.removeAllElements();
+		Logger.appenderList.clear();
 		Logger.stopWatch.stop();
 		Logger.stopWatch.reset();
-		firstLogEvent = true;
+		Logger.firstLogEvent = true;
 	}
 
 	/**
 	 * Open the log. The logging is now turned on.
 	 */
 	void open() throws IOException {
-
-		int nofAppenders = appenderList.size();
-		for (int index = 0; index < nofAppenders; index++) {
-			Appender appender = (Appender) appenderList.elementAt(index);
+		for(Appender appender : appenderList) {
 			appender.open();
 		}
-
 	}
 
 	/**
@@ -494,11 +486,10 @@ public final class Logger {
 	 *             if the <code>Logger</code> failed to close.
 	 */
 	public void close() throws IOException {
-		int nofAppenders = appenderList.size();
-		for (int index = 0; index < nofAppenders; index++) {
-			Appender appender = (Appender) appenderList.elementAt(index);
+		for(Appender appender : appenderList) {
 			appender.close();
 		}
+		
 		stopWatch.stop();
 		Logger.firstLogEvent = true;
 	}

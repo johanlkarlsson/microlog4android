@@ -18,11 +18,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import android.content.Context;
+
 import com.google.code.microlog4android.Appender;
 import com.google.code.microlog4android.Level;
-
-
-import android.content.Context;
 
 
 /**
