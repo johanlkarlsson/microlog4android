@@ -1,4 +1,6 @@
-defaultTasks 'clean', 'install'
+defaultTasks 'clean', 'build'
+
+dependsOn(':microlog4android-core-tests')
 
 dependencies {
 	// microlog4android-core
