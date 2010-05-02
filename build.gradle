@@ -1,7 +1,7 @@
-defaultTasks 	/* Core */				'microlog4android-core:clean', 'microlog4android-core:install',
-				/* Core tests */		'microlog4android-core-tests:clean', 'microlog4android-core-tests:test',
-				/* slf4j impl */		'microlog4android-slf4j-impl:clean', 'microlog4android-slf4j-impl:install',
-				/* package modules */	'clean', 'build'
+defaultTasks 	/* Core */					'microlog4android-core:clean', 'microlog4android-core:build',
+				/* Core tests */			'microlog4android-core-tests:clean', 'microlog4android-core-tests:test',
+				/* slf4j impl */			'microlog4android-slf4j-impl:clean', 'microlog4android-slf4j-impl:build',
+				/* package modules */		'clean', 'packageJar'
 				
 subprojects {
 	apply plugin: 'java'
@@ -18,6 +18,11 @@ subprojects {
 }
 
 
+
+/*
+ * MAIN BUILD 
+ */
+dependsOn(':microlog4android-slf4j-impl')
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -39,4 +44,24 @@ dependencies {
 
 jar {
 	from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+}
+
+tempJarFiles = buildDirName + '/tmp-classes'
+
+task unpackFatJar(dependsOn: jar) << {
+	copy {
+		jarFile = libsDir.listFiles()[0]
+	    from zipTree(jarFile)
+		include '**/*.class'
+		into tempJarFiles
+	}
+}
+
+task deleteUnusedJar(dependsOn: unpackFatJar) << {
+	libsDir.listFiles()[0].delete()
+}
+
+task packageJar(dependsOn: deleteUnusedJar, type: Zip) {
+	from tempJarFiles
+	extension = 'jar'
 }

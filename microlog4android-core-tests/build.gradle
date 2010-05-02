@@ -1,5 +1,7 @@
 defaultTasks 'clean', 'test'
 
+dependsOn(':microlog4android-core')
+
 dependencies {
 	// microlog4android-core
 	compile fileTree(dir: '../microlog4android-core/build/libs', include:'microlog4android-core*.jar')

@@ -1,0 +1,1 @@
+dependsOn(':microlog4android-core-tests:test')

@@ -77,9 +77,7 @@ public class LoggerFactory {
 	 * Shutdown Microlog.
 	 */
 	public static void shutdown() {
-//		System.out.println("Shutting down Microlog");
 		loggerRepository.shutdown();
-//		System.out.println("Microlog shutdown complete. Bye, bye!");
 	}
 
 	/**
