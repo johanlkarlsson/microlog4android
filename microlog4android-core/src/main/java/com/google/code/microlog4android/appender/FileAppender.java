@@ -14,15 +14,15 @@
  */
 package com.google.code.microlog4android.appender;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import android.content.Context;
+import android.os.Environment;
 
 import com.google.code.microlog4android.Appender;
 import com.google.code.microlog4android.Level;
-
 
 /**
  * An appender to log to a file in the application private dir.
@@ -34,23 +34,9 @@ public class FileAppender extends AbstractAppender {
 
 	public static final String DEFAULT_FILENAME = "microlog.txt";
 
-	private Context context;
-
 	private String fileName = DEFAULT_FILENAME;
 
 	private PrintWriter writer;
-
-	/**
-	 * Set the {@link Context} for the {@link FileAppender}
-	 * 
-	 * Note: this must be set in order to create a file.
-	 * 
-	 * @param context
-	 *            the application context
-	 */
-	public void setContext(Context context) {
-		this.context = context;
-	}
 
 	/**
 	 * Set the filename to be used
@@ -108,9 +94,39 @@ public class FileAppender extends AbstractAppender {
 	 */
 	@Override
 	public void open() throws IOException {
-		FileOutputStream outputStream = context.openFileOutput(fileName,
-				Context.MODE_PRIVATE);
-		writer = new PrintWriter(outputStream);
+		System.out.println("Open FileAppender");
+
+		String externalStorageState = Environment.getExternalStorageState();
+		File externalStorageDirectory = Environment
+				.getExternalStorageDirectory();
+		File logFile = null;
+		FileOutputStream fileOutputStream = null;
+
+		if (externalStorageState.equals(Environment.MEDIA_MOUNTED)
+				&& externalStorageDirectory != null) {
+			System.out.println("Using the SD card");
+			logFile = new File(externalStorageDirectory, fileName);
+		} else {
+			File downloadCacheDirectory = Environment
+					.getDownloadCacheDirectory();
+			logFile = new File(downloadCacheDirectory, fileName);
+		}
+		
+		if(logFile != null){
+			System.out.println("Using log file: "+logFile);
+			if(!logFile.exists()){
+				System.out.println("Creating the file");
+				logFile.createNewFile();
+			}
+			System.out.println("Opening log file: "+logFile);
+			fileOutputStream = new FileOutputStream(logFile);
+		}
+
+		if (fileOutputStream != null) {
+			writer = new PrintWriter(fileOutputStream);
+		} else {
+			System.err.println("Failed to create the log file (no stream)");
+		}
 	}
 
 	/**
