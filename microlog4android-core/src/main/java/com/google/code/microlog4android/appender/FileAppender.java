@@ -63,6 +63,7 @@ public class FileAppender extends AbstractAppender {
 	 */
 	@Override
 	public void close() throws IOException {
+		System.out.println("Closing the FileAppender");
 		if (writer != null) {
 			writer.close();
 		}
@@ -77,8 +78,10 @@ public class FileAppender extends AbstractAppender {
 	public void doLog(String clientID, String name, long time, Level level,
 			Object message, Throwable throwable) {
 		if (logOpen && formatter != null) {
+			System.out.println("Logging with the FileAppender");
 			writer.println(formatter.format(clientID, name, time, level,
 					message, throwable));
+			writer.flush();
 
 			if (throwable != null) {
 				throwable.printStackTrace();
@@ -123,10 +126,14 @@ public class FileAppender extends AbstractAppender {
 		}
 
 		if (fileOutputStream != null) {
+			System.out.println("Creating the writer");
 			writer = new PrintWriter(fileOutputStream);
 		} else {
 			System.err.println("Failed to create the log file (no stream)");
+			logOpen = false;
 		}
+		
+		logOpen = true;
 	}
 
 	/**
