@@ -32,7 +32,7 @@ class RepositoryNode {
 	
 	protected RepositoryNode parent;
 
-	protected Hashtable children = new Hashtable(17);
+	protected Hashtable<String, RepositoryNode> children = new Hashtable<String, RepositoryNode>(17);
 
 	protected Logger logger;
 	

@@ -25,7 +25,7 @@ import com.google.code.microlog4android.Appender;
 import com.google.code.microlog4android.Level;
 
 /**
- * An appender to log to a file in the application private dir.
+ * An appender to log to a file in on the SDCard.
  * 
  * @author Johan Karlsson
  * 
