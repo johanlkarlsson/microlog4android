@@ -186,22 +186,4 @@ public class MemoryBufferAppender extends AbstractAppender {
 		return cyclicBuffer.length();
 	}
 
-	public String[] getPropertyNames() {
-		return MemoryBufferAppender.PROPERTY_NAMES;
-	}
-
-	public void setProperty(String name, String value)
-			throws IllegalArgumentException {
-		super.setProperty(name, value);
-
-		if (name.equals(MemoryBufferAppender.CYCLIC_BUFFER_PROPERTY)) {
-			this.cyclicBufferEnabled = "true".equalsIgnoreCase(value);
-		} else if (name.equals(MemoryBufferAppender.MAX_LOG_ENTRIES_PROPERTY)) {
-			int maxNbrOfEntries = Integer.parseInt(value);
-			if (maxNbrOfEntries > 0) {
-				cyclicBuffer = new CyclicBuffer(maxNbrOfEntries);
-			}
-		}
-	}
-
 }

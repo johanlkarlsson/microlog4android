@@ -38,16 +38,32 @@ public class FileAppender extends AbstractAppender {
 
 	private PrintWriter writer;
 
+	private boolean append = false;
+
 	/**
-	 * Set the filename to be used
-	 * 
-	 * @param fileName
-	 *            the filename to log to
+	 * @see com.google.code.microlog4android.appender.AbstractAppender#open()
 	 */
-	public void setFileName(String fileName) {
-		if (fileName != null) {
-			this.fileName = fileName;
+	@Override
+	public void open() throws IOException {
+		
+		File logFile = getSDCardFile();
+		FileOutputStream fileOutputStream = null;
+
+		if (logFile != null) {
+			if (!logFile.exists()) {
+				logFile.createNewFile();
+			}
+			fileOutputStream = new FileOutputStream(logFile, append);
 		}
+
+		if (fileOutputStream != null) {
+			writer = new PrintWriter(fileOutputStream);
+		} else {
+			System.err.println("Failed to create the log file (no stream)");
+			logOpen = false;
+		}
+
+		logOpen = true;
 	}
 
 	/**
@@ -77,8 +93,7 @@ public class FileAppender extends AbstractAppender {
 	@Override
 	public void doLog(String clientID, String name, long time, Level level,
 			Object message, Throwable throwable) {
-		if (logOpen && formatter != null) {
-			System.out.println("Logging with the FileAppender");
+		if (logOpen && formatter != null && writer != null) {
 			writer.println(formatter.format(clientID, name, time, level,
 					message, throwable));
 			writer.flush();
@@ -93,54 +108,48 @@ public class FileAppender extends AbstractAppender {
 	}
 
 	/**
-	 * @see com.google.code.microlog4android.appender.AbstractAppender#open()
-	 */
-	@Override
-	public void open() throws IOException {
-		System.out.println("Open FileAppender");
-
-		String externalStorageState = Environment.getExternalStorageState();
-		File externalStorageDirectory = Environment
-				.getExternalStorageDirectory();
-		File logFile = null;
-		FileOutputStream fileOutputStream = null;
-
-		if (externalStorageState.equals(Environment.MEDIA_MOUNTED)
-				&& externalStorageDirectory != null) {
-			System.out.println("Using the SD card");
-			logFile = new File(externalStorageDirectory, fileName);
-		} else {
-			File downloadCacheDirectory = Environment
-					.getDownloadCacheDirectory();
-			logFile = new File(downloadCacheDirectory, fileName);
-		}
-		
-		if(logFile != null){
-			System.out.println("Using log file: "+logFile);
-			if(!logFile.exists()){
-				System.out.println("Creating the file");
-				logFile.createNewFile();
-			}
-			System.out.println("Opening log file: "+logFile);
-			fileOutputStream = new FileOutputStream(logFile);
-		}
-
-		if (fileOutputStream != null) {
-			System.out.println("Creating the writer");
-			writer = new PrintWriter(fileOutputStream);
-		} else {
-			System.err.println("Failed to create the log file (no stream)");
-			logOpen = false;
-		}
-		
-		logOpen = true;
-	}
-
-	/**
 	 * @see com.google.code.microlog4android.Appender#getLogSize()
 	 */
 	public long getLogSize() {
 		return Appender.SIZE_UNDEFINED;
+	}
+
+	/**
+	 * Set the filename to be used
+	 * 
+	 * @param fileName
+	 *            the filename to log to
+	 */
+	public void setFileName(String fileName) {
+		// TODO Throw IllegalArgumentException if the filename is null.
+		if (fileName != null) {
+			this.fileName = fileName;
+		}
+	}
+
+	/**
+	 * Set if we shall append the file when logging or if we shall start over
+	 * all again when starting a new session.
+	 * 
+	 * @param append
+	 *            the append to set
+	 */
+	public void setAppend(boolean append) {
+		this.append = append;
+	}
+
+	private File getSDCardFile() {
+		String externalStorageState = Environment.getExternalStorageState();
+		File externalStorageDirectory = Environment
+				.getExternalStorageDirectory();
+		File file = null;
+
+		if (externalStorageState.equals(Environment.MEDIA_MOUNTED)
+				&& externalStorageDirectory != null) {
+			file = new File(externalStorageDirectory, fileName);
+		}
+
+		return file;
 	}
 
 }

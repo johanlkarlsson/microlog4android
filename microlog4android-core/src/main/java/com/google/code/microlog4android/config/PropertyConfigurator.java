@@ -52,6 +52,11 @@ public class PropertyConfigurator {
 	 * The key for setting the level.
 	 */
 	public static final String LOG_LEVEL_PREFIX_KEY = "microlog.level";
+	
+	/**
+	 * The key for setting the logging tag.
+	 */
+	public static final String TAG_PREFIX_KEY = "microlog.tag";
 
 	public static final String[] APPENDER_ALIASES = { "ConsoleAppender",
 			"FileAppender" };
@@ -157,11 +162,12 @@ public class PropertyConfigurator {
 	 * @param properties
 	 */
 	private void startConfiguration(Properties properties) {
-		System.out.println("startConfiguration()");
 
 		if (properties.containsKey(PropertyConfigurator.ROOT_LOGGER_KEY)) {
 			System.out.println("Modern configuration, not yet supported");
 		} else {
+			System.out
+					.println("Configure using the simple style (aka classic style)");
 			configureSimpleStyle(properties);
 		}
 	}
@@ -210,7 +216,7 @@ public class PropertyConfigurator {
 	}
 
 	private void addAppender(String string) {
-		
+
 		Logger rootLogger = loggerRepository.getRootLogger();
 		String className = appenderAliases.get(string);
 
@@ -223,22 +229,23 @@ public class PropertyConfigurator {
 			Appender appender = (Appender) appenderClass.newInstance();
 
 			if (appender != null) {
-				System.out.println("Adding appender "+appender.getClass().getName());
+				System.out.println("Adding appender "
+						+ appender.getClass().getName());
 				rootLogger.addAppender(appender);
 			}
 
 		} catch (ClassNotFoundException e) {
-			System.err.println("Failed to find appender class: "+e);
+			System.err.println("Failed to find appender class: " + e);
 		} catch (IllegalAccessException e) {
-			System.err.println("No access to appender class: "+e);
+			System.err.println("No access to appender class: " + e);
 		} catch (InstantiationException e) {
-			System.err.println("Failed to instantiate appender class: "+e);
+			System.err.println("Failed to instantiate appender class: " + e);
 		}
 	}
 
 	private void setFormatter(Properties properties) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
