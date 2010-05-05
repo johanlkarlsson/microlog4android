@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.code.microlog4android.appender.StandardAndroidAppender;
+import com.google.code.microlog4android.appender.LogCatAppender;
 import com.google.code.microlog4android.config.DefaultLoggerRepository;
 import com.google.code.microlog4android.format.PatternFormatter;
 
@@ -40,8 +40,10 @@ import com.google.code.microlog4android.format.PatternFormatter;
 public final class Logger {
 
 	public static final Level DEFAULT_LOG_LEVEL = Level.DEBUG;
+	
+	public static final String DEFAULT_CLIENT_ID = "Microlog";
 
-	private String clientID;
+	private String clientID = DEFAULT_CLIENT_ID;
 
 	private String name;
 
@@ -253,7 +255,7 @@ public final class Logger {
 				if (nofAppenders == 0) {
 					System.err
 							.println("Warning! No appender is set, using ConsoleAppender with PatternFormatter");
-					Appender appender = new StandardAndroidAppender();
+					Appender appender = new LogCatAppender();
 					appender.setFormatter(new PatternFormatter());
 					addAppender(appender);
 					nofAppenders++;

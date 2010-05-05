@@ -52,16 +52,17 @@ public class PropertyConfigurator {
 	 * The key for setting the level.
 	 */
 	public static final String LOG_LEVEL_PREFIX_KEY = "microlog.level";
-	
+
 	/**
 	 * The key for setting the logging tag.
 	 */
 	public static final String TAG_PREFIX_KEY = "microlog.tag";
 
-	public static final String[] APPENDER_ALIASES = { "ConsoleAppender",
-			"FileAppender" };
+	public static final String[] APPENDER_ALIASES = { "LogCatAppender",
+			"ConsoleAppender", "FileAppender" };
 
 	public static final String[] APPENDER_CLASS_NAMES = {
+			"com.google.code.microlog4android.appender.LogCatAppender",
 			"com.google.code.microlog4android.appender.ConsoleAppender",
 			"com.google.code.microlog4android.appender.FileAppender" };
 
