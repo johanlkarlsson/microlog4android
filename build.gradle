@@ -2,8 +2,9 @@ defaultTasks 	/* Core */					'microlog4android-core:clean', 'microlog4android-co
 				/* Core tests */			'microlog4android-core-tests:clean', 'microlog4android-core-tests:test',
 				/* slf4j impl */			'microlog4android-slf4j-impl:clean', 'microlog4android-slf4j-impl:build',
 				/* package modules */		'clean', 'packageJar'
-				
-subprojects {
+
+
+allprojects {
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
 	apply plugin: 'maven'
@@ -12,29 +13,16 @@ subprojects {
 		mavenCentral()
 		mavenRepo urls: "file://" + System.getProperty('user.home') + "/.m2/repository/"
 	}
-		
+	
 	sourceCompatibility = source
 	version = microlog4androidVersion
 }
-
 
 
 /*
  * MAIN BUILD 
  */
 dependsOn(':microlog4android-slf4j-impl')
-
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'maven'
-
-repositories {
-	mavenCentral()
-	mavenRepo urls: "file://" + System.getProperty('user.home') + "/.m2/repository/"
-}
-
-sourceCompatibility = source
-version = microlog4androidVersion
 
 dependencies {
 	// microlog4android

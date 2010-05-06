@@ -4,7 +4,6 @@
 package com.google.code.microlog4android.appender;
 
 import com.google.code.microlog4android.Level;
-import com.google.code.microlog4android.SyslogMessage;
 
 /**
  * 

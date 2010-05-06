@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.code.microlog4android.appender.ConsoleAppender;
-import com.google.code.microlog4android.appender.StandardAndroidAppender;
 import com.google.code.microlog4android.config.DefaultLoggerRepository;
 import com.google.code.microlog4android.format.PatternFormatter;
 
@@ -254,7 +253,7 @@ public final class Logger {
 				if (nofAppenders == 0) {
 					System.err
 							.println("Warning! No appender is set, using ConsoleAppender with PatternFormatter");
-					Appender appender = new StandardAndroidAppender();
+					Appender appender = new ConsoleAppender();
 					appender.setFormatter(new PatternFormatter());
 					addAppender(appender);
 					nofAppenders++;

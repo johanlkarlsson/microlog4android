@@ -29,30 +29,31 @@ public enum StringUtil {
 	 * @param string
 	 *            the name of the class
 	 * @param parts
-	 *            the number of parts of the clas name that you want to be
+	 *            the number of parts of the class name that you want to be
 	 *            returned.
 	 * 
 	 * @return the partial class name.
 	 */
-	public static String extractPartialClassName(String string, int parts) {
-		String partialCategoryName = string;
+	public static String extractPartialClassName(String className, int parts) {
+		String partialCategoryName = className;
 
 		int nofDots = 0;
-		int dotIndex = string.lastIndexOf('.');
+		int dotIndex = className.lastIndexOf('.');
 		if (dotIndex != -1) {
 			nofDots++;
 		}
 
 		while (nofDots < parts && dotIndex > -1) {
-			dotIndex = string.lastIndexOf('.', dotIndex - 1);
-
+			dotIndex = className.lastIndexOf('.', dotIndex - 1);
+			System.out.println(dotIndex);
+			
 			if (dotIndex != -1) {
 				nofDots++;
 			}
 		}
 
 		if (dotIndex > -1 && nofDots <= parts) {
-			partialCategoryName = string.substring(dotIndex + 1);
+			partialCategoryName = className.substring(dotIndex + 1);
 		}
 
 		return partialCategoryName;

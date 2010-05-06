@@ -1,5 +1,5 @@
 defaultTasks 'clean', 'build'
 
 dependencies {
-	compile files(androidSdkPath + '/platforms/android-3/android.jar')
+	compile files('../lib/jar/modified-android.jar')
 }

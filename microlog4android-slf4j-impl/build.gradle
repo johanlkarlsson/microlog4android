@@ -4,7 +4,7 @@ dependsOn(':microlog4android-core-tests')
 
 dependencies {
 	// microlog4android-core
-	compile fileTree(dir: '../microlog4android-core/build/libs', include:'microlog4android-core*.jar')
+	compile project(':microlog4android-core')
 	
 	// slf4j api
 	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.5.11'
