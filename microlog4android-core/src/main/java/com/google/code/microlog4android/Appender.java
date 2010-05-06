@@ -102,26 +102,4 @@ public interface Appender {
 	 */
 	Formatter getFormatter();
 
-	/**
-	 * Get the appender specific property names. This is workaround for the lack
-	 * of reflection in Java ME and is used for configuration.
-	 * 
-	 * @return an array of the supported properties.
-	 */
-	String[] getPropertyNames();
-
-	/**
-	 * Set the specified property to the supplied value.
-	 * 
-	 * @param name
-	 *            the name of the property to set.
-	 * @param value
-	 *            the value to set.
-	 * @throws IllegalArgumentException
-	 *             if the name or value has an invalid value, such as
-	 *             <code>null</code>.
-	 */
-	void setProperty(String name, String value)
-			throws IllegalArgumentException;
-
 }

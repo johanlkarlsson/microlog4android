@@ -164,7 +164,7 @@ public class PatternFormatter implements Formatter {
 
 		int currentIndex = 0;
 		int patternLength = pattern.length();
-		Vector converterVector = new Vector(20);
+		Vector<FormatCommandInterface> converterVector = new Vector<FormatCommandInterface>(20);
 
 		while (currentIndex < patternLength) {
 			char currentChar = pattern.charAt(currentIndex);

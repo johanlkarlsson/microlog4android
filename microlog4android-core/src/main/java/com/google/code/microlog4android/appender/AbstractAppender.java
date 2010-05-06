@@ -115,23 +115,4 @@ public abstract class AbstractAppender implements Appender {
 	 */
 	public abstract void open() throws IOException;
 
-	/**
-	 * @see Appender#getPropertyNames()
-	 */
-	public String[] getPropertyNames() {
-		// Default implementation to be used when no properties are available.
-		return null;
-	}
-
-	public void setProperty(String name, String value)
-			throws IllegalArgumentException {
-		if (name == null || name.length() == 0 || value == null
-				|| value.length() == 0) {
-			throw new IllegalArgumentException(
-					"Name and value must not be null and a length > 0");
-		}
-		
-		// The actual property is not set, this must be done in sub-classes.
-	}
-
 }
