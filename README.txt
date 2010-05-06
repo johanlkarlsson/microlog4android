@@ -1,5 +1,27 @@
-Install gradle 0.9:
-http://www.gradle.org/installation.html
+#####################
+# PROJECT SETUP
+#####################
+1. Download source code from github: git clone git@github.com:johanlkarlsson/microlog4android.git
+2. In the root directory of the project (microlog4android folder) edit the gradle.properties file.
+   Change the value of the androidSdkPath-property to point to the Android SDK on you local machine.
+3. Run "gradle -b build-android_lib.gradle". This will generate modified version of the android.jar file in the lib-folder.
+4. Run "gradle eclipse", still from the root project. This will generate the Eclipse project files.
+5. Import the other modules into Eclipse as existing projects.
+6. To run a complete build of the microlog4android project simply run "gradle" in the root project.
 
-Gradle 0.9 userguide:
-http://www.gradle.org/0.9-preview-1/docs/userguide/userguide.pdf
+
+#####################
+# REQUIREMENTS
+#####################
+Gradle:
+- Installation: http://www.gradle.org/installation.html
+- User guide: http://www.gradle.org/0.9-preview-1/docs/userguide/userguide.pdf
+
+Android SDK:
+- http://developer.android.com/sdk
+
+Eclipse:
+- Android plugin: http://developer.android.com/guide/developing/eclipse-adt.html
+
+Git:
+- git-osx.installer: http://code.google.com/p/git-osx-installer/
