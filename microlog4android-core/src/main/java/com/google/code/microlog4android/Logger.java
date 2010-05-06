@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.code.microlog4android.appender.ConsoleAppender;
 import com.google.code.microlog4android.appender.LogCatAppender;
 import com.google.code.microlog4android.config.DefaultLoggerRepository;
 import com.google.code.microlog4android.format.PatternFormatter;
