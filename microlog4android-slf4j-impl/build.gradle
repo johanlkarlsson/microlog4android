@@ -11,7 +11,15 @@ dependencies {
 }
 
 jar {
-	from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+	def fileList = []
+	
+	configurations.compile.each {
+		if(it.getName().contains('slf4j')) {
+			fileList.add(zipTree(it))
+		}
+	}
+	
+	from fileList
 }
 
 jar {

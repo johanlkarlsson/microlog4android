@@ -43,3 +43,15 @@ task packageAndroidLib(dependsOn: createJarFile) {
 		into libJarDir
 	}
 }
+
+/*
+ * CODE FOR THE ANDROID GRADLE PLUGIN, NOT USED YET!
+ * 
+ * Based on the androidSdkPath this task creates the local.properties needed in the microlog4android-integration-tests project
+ */
+//task setupIntegrationProject {
+//	ant.echo(file: 'microlog4android-integration-tests/local.properties', 'append': 'false', message: ('sdk.dir = ' + androidSdkPath))
+//
+//	ant.echo(file: 'microlog4android-integration-tests/gradle.properties', 'append': 'false', message: ('androidSdkPath = ' + androidSdkPath))
+//	ant.echo(file: 'microlog4android-integration-tests/gradle.properties', 'append': 'true', message: ('\nandroidVirtualDeviceName = ' + androidVirtualDeviceName))
+//}

@@ -1,7 +1,7 @@
 defaultTasks 	/* Core */					'microlog4android-core:clean', 'microlog4android-core:build',
 				/* Core tests */			'microlog4android-core-tests:clean', 'microlog4android-core-tests:test',
 				/* slf4j impl */			'microlog4android-slf4j-impl:clean', 'microlog4android-slf4j-impl:build',
-				/* package modules */		'clean', 'packageJar'
+				/* package modules */		'clean', 'copyJarToIntegrationTests'
 
 
 allprojects {
@@ -38,7 +38,8 @@ tempJarFiles = buildDirName + '/tmp-classes'
 
 task unpackFatJar(dependsOn: jar) << {
 	copy {
-		jarFile = libsDir.listFiles()[0]
+		jarFile = findMicrologJar()
+
 	    from zipTree(jarFile)
 		include '**/*.class'
 		into tempJarFiles
@@ -46,10 +47,39 @@ task unpackFatJar(dependsOn: jar) << {
 }
 
 task deleteUnusedJar(dependsOn: unpackFatJar) << {
-	libsDir.listFiles()[0].delete()
+	findMicrologJar().delete()
+}
+
+/*
+ * Returns the microlog4android jar-file.
+ */
+private File findMicrologJar() {
+	File[] distsDirContent = libsDir.listFiles()
+
+	File micrologJar = null
+	for(File file : distsDirContent) {
+		if(file.getName().contains('microlog4android')) {
+			micrologJar = file
+		}
+	}
+	
+	return micrologJar
 }
 
 task packageJar(dependsOn: deleteUnusedJar, type: Zip) {
-	from tempJarFiles
 	extension = 'jar'
+	from tempJarFiles
+}
+
+/*
+ * Copies the packaged jar file into the integration-tests project
+ */
+task copyJarToIntegrationTests(dependsOn: packageJar) << {
+	ant.mkdir(dir: 'microlog4android-integration-tests/libs')
+	
+	copy {
+		from distsDir
+		include '*.jar'
+		into 'microlog4android-integration-tests/libs'
+	}
 }
