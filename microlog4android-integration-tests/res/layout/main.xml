@@ -4,9 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" android:text="@string/testsRun" android:gravity="center_horizontal" android:textStyle="bold"/>
-<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal" android:id="@+id/numberOfTests" android:text="0"></TextView>
+
+
 
 </LinearLayout>

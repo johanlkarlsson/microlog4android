@@ -75,8 +75,6 @@ task packageJar(dependsOn: deleteUnusedJar, type: Zip) {
  * Copies the packaged jar file into the integration-tests project
  */
 task copyJarToIntegrationTests(dependsOn: packageJar) << {
-	ant.mkdir(dir: 'microlog4android-integration-tests/libs')
-	
 	copy {
 		from distsDir
 		include '*.jar'

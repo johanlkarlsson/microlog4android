@@ -4,4 +4,5 @@ apply plugin: 'eclipse'
 
 dependencies {
 	compile files('libs/microlog4android-0.0.1.jar')
+	compile files('libs/robotium-solo-1.4.0.jar')
 }

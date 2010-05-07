@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.google.code.microlog4android.integration.tests"
-      android:versionCode="1"
-      android:versionName="1.0">
-    <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name=".IntegrationTests"
-                  android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-    </application>
+	package="com.google.code.microlog4android.integration.tests"
+	android:versionCode="1" android:versionName="1.0">
+	<application android:icon="@drawable/icon" android:label="@string/app_name">
+    <uses-library android:name="android.test.runner"></uses-library>
+	</application>
 
 
-<uses-sdk android:minSdkVersion="3"></uses-sdk>
-</manifest> 
+	<uses-sdk android:minSdkVersion="3"></uses-sdk>
+	<instrumentation android:name="android.test.InstrumentationTestRunner"
+		android:targetPackage="com.google.code.microlog4android.integration.tests"></instrumentation>
+</manifest>
