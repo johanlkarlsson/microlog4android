@@ -1,1 +1,1 @@
-include "microlog4android-core", "microlog4android-core-tests", "microlog4android-slf4j-impl"
+include "microlog4android-core", "microlog4android-core-tests", "microlog4android-slf4j-impl", "microlog4android-integration-tests"

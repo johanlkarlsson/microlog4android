@@ -12,6 +12,8 @@
 7. Integration tests are executed in the emulator. Simply run the microlog4android-integration-tests as an Android application from Eclipse.
    Remember to run the "gradle" command in the root project before starting the integration tests.
 
+If you run any of the gradle commands several times and it is not working as intended, you can try "gradle -C rebuild" to rebuild the gradle cache.
+
 
 #####################
 # REQUIREMENTS
