@@ -1,0 +1,9 @@
+Android testing:
+http://johnpwood.net/2010/02/23/thoughts-on-android-development/
+https://sites.google.com/site/androiddevtesting/
+
+Android emulator JUnit tests:
+http://dtmilano.blogspot.com/2009/07/android-testing-on-android-platform_4442.html
+
+Unit and functional testing in Android:
+http://mihaifonoage.blogspot.com/2010/01/unit-and-functional-testing-in-android.html
