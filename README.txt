@@ -13,6 +13,7 @@
    Remember to run the "gradle" command in the root project before starting the integration tests.
 
 If you run any of the gradle commands several times and it is not working as intended, you can try "gradle -C rebuild" to rebuild the gradle cache.
+This can be useful if you for example run the build-android_lib.gradle script before remembering to change the path to your local SDK.
 
 
 #####################
