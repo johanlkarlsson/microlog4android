@@ -107,7 +107,7 @@ public class PropertyConfigurator {
 
 	private PropertyConfigurator(Context context) {
 		this.context = context;
-		loggerRepository = DefaultLoggerRepository.getInstance();
+		loggerRepository = DefaultLoggerRepository.INSTANCE;
 	}
 
 	/**

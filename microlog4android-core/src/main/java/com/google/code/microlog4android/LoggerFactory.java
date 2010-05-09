@@ -29,7 +29,7 @@ public class LoggerFactory {
 	 * The reference to the underlying logger repository.
 	 */
 	private static final LoggerRepository loggerRepository = DefaultLoggerRepository
-			.getInstance();
+			.INSTANCE;
 
 	/**
 	 * The un-named logger. This is the classic Microlog method, that is

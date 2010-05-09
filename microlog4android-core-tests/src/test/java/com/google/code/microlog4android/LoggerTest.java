@@ -22,13 +22,13 @@ public class LoggerTest {
 
 	@After
 	public void teardown() {
-		DefaultLoggerRepository.getInstance().reset();
+		DefaultLoggerRepository.INSTANCE.reset();
 	}
 
 	@Test
 	public void testGetEffectiveLevel() {
-		DefaultLoggerRepository.getInstance().getLogger(LoggerTest.class.getName());
-		DefaultLoggerRepository.getInstance().setLevel(LoggerTest.class.getName(), Level.DEBUG);
+		DefaultLoggerRepository.INSTANCE.getLogger(LoggerTest.class.getName());
+		DefaultLoggerRepository.INSTANCE.setLevel(LoggerTest.class.getName(), Level.DEBUG);
 
 		Level returnLevel = logger.getEffectiveLevel();
 
@@ -110,8 +110,8 @@ public class LoggerTest {
 
 		logger.addAppender(mockedAppender);
 
-		DefaultLoggerRepository.getInstance().getLogger(LoggerTest.class.getName());
-		DefaultLoggerRepository.getInstance().setLevel(LoggerTest.class.getName(), Level.DEBUG);
+		DefaultLoggerRepository.INSTANCE.getLogger(LoggerTest.class.getName());
+		DefaultLoggerRepository.INSTANCE.setLevel(LoggerTest.class.getName(), Level.DEBUG);
 
 		logger.log(Level.INFO, "test");
 
@@ -125,8 +125,8 @@ public class LoggerTest {
 
 		logger.addAppender(mockedAppender);
 
-		DefaultLoggerRepository.getInstance().getLogger(LoggerTest.class.getName());
-		DefaultLoggerRepository.getInstance().setLevel(LoggerTest.class.getName(), Level.INFO);
+		DefaultLoggerRepository.INSTANCE.getLogger(LoggerTest.class.getName());
+		DefaultLoggerRepository.INSTANCE.setLevel(LoggerTest.class.getName(), Level.INFO);
 
 		logger.log(Level.DEBUG, "test");
 

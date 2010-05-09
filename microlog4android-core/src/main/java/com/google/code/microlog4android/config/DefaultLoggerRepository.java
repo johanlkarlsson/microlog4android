@@ -27,15 +27,15 @@ import com.google.code.microlog4android.Logger;
  * <code>Logger</code> object(s).
  * 
  * @author Johan Karlsson (johan.karlsson@jayway.se)
+ * @author Jarle Hansen (hansjar@gmail.com)
  * @since 2.0
  * 
  */
-public class DefaultLoggerRepository implements LoggerRepository {
-
-	private static DefaultLoggerRepository loggerRepository = new DefaultLoggerRepository();
+public enum DefaultLoggerRepository implements LoggerRepository {
+	INSTANCE;
 
 	private RepositoryNode rootNode;
-
+	
 	private Hashtable<String, RepositoryNode> leafNodeHashtable = new Hashtable<String, RepositoryNode>(43);
 
 	/**
@@ -45,15 +45,6 @@ public class DefaultLoggerRepository implements LoggerRepository {
 		Logger rootLogger = new Logger("");
 		rootLogger.setLevel(Level.DEBUG);
 		rootNode = new RepositoryNode("", rootLogger);
-	}
-
-	/**
-	 * Return the singleton instance of the LoggerTree.
-	 * 
-	 * @return the <code>DefaultLoggerRepository</code> instance.
-	 */
-	public static DefaultLoggerRepository getInstance() {
-		return loggerRepository;
 	}
 
 	/**
@@ -87,7 +78,6 @@ public class DefaultLoggerRepository implements LoggerRepository {
 	 *            the <code>Logger</code> to add.
 	 */
 	synchronized void addLogger(Logger logger) {
-
 		String loggerName = logger.getName();
 		int beginIndex = 0;
 		int endIndex = loggerName.indexOf('.');
@@ -96,7 +86,7 @@ public class DefaultLoggerRepository implements LoggerRepository {
 		while (endIndex != -1) {
 			String pathComponent = loggerName.substring(beginIndex, endIndex);
 			beginIndex = endIndex + 1;
-
+			
 			RepositoryNode child = currentNode.getChildNode(pathComponent);
 
 			if (child != null) {

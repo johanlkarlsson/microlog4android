@@ -101,7 +101,7 @@ public final class Logger {
 		Level effectiveLevel = this.level;
 
 		if (effectiveLevel == null && !name.equals("")) {
-			effectiveLevel = DefaultLoggerRepository.getInstance()
+			effectiveLevel = DefaultLoggerRepository.INSTANCE
 					.getEffectiveLevel(this);
 		}
 

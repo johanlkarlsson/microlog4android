@@ -12,6 +12,7 @@
 7. Integration tests are executed in the emulator. Simply run the microlog4android-integration-tests as an Android application from Eclipse.
    Remember to run the "gradle" command in the root project before starting the integration tests.
    The integration-tests project needs to be converted to an Android project after you have imported it into Eclipse.
+8. When you have done a complete build of the microlog4android project the jar-file will be located in the build/distributions folder.
 
 If you run any of the gradle commands several times and it is not working as intended, you can try "gradle -C rebuild" to rebuild the gradle cache.
 This can be useful if you for example run the build-android_lib.gradle script before remembering to change the path to your local SDK.

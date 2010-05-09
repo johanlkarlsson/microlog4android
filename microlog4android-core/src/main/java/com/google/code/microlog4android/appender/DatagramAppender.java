@@ -25,7 +25,7 @@ import com.google.code.microlog4android.Level;
 
 /**
  * The <code>DatagramAppender</code> uses a <code>DatagramSocket</code> to send
- * <code>Datagram</code> to a server. This is the be used on Android or in a
+ * <code>Datagram</code> to a server. This can be used on Android or in a
  * Java SE environment.
  * 
  * @author Johan Karlsson

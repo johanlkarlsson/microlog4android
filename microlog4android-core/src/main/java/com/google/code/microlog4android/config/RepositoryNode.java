@@ -26,7 +26,7 @@ import com.google.code.microlog4android.Logger;
  * @author Johan Karlsson (johan.karlsson@jayway.se)
  * 
  */
-class RepositoryNode {
+public class RepositoryNode {
 
 	protected String name;
 	
@@ -109,7 +109,7 @@ class RepositoryNode {
 	}
 
 	public RepositoryNode getChildNode(String name) {
-		return (RepositoryNode) children.get(name);
+		return children.get(name);
 	}
 	
 	/**
