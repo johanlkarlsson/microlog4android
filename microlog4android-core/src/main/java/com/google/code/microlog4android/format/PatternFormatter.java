@@ -17,6 +17,8 @@ package com.google.code.microlog4android.format;
 
 import java.util.Vector;
 
+import android.util.Log;
+
 import com.google.code.microlog4android.Formatter;
 import com.google.code.microlog4android.Level;
 import com.google.code.microlog4android.format.command.CategoryFormatCommand;
@@ -62,7 +64,8 @@ import com.google.code.microlog4android.format.command.TimeFormatCommand;
  * @since 0.6
  */
 public class PatternFormatter implements Formatter {
-
+	private static final String TAG = "Microlog.PatternFormatter";
+	
 	public static final String PATTERN_PROPERTY = "pattern";
 
 	/**
@@ -225,7 +228,7 @@ public class PatternFormatter implements Formatter {
 					break;
 
 				default:
-					System.err.println("Unrecognized conversion character "
+					Log.e(TAG, "Unrecognized conversion character "
 							+ currentChar);
 					break;
 				}

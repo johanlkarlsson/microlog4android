@@ -17,6 +17,8 @@ package com.google.code.microlog4android.appender;
 import java.io.IOException;
 import java.util.Vector;
 
+import android.util.Log;
+
 import com.google.code.microlog4android.CyclicBuffer;
 import com.google.code.microlog4android.Level;
 
@@ -51,7 +53,8 @@ import com.google.code.microlog4android.Level;
  * @since 1.1.0
  */
 public class MemoryBufferAppender extends AbstractAppender {
-
+	private static final String TAG = "Microlog.MemoryBufferAppender";
+	
 	public static final String MAX_LOG_ENTRIES_PROPERTY = "maxLogEntries";
 
 	public static final String CYCLIC_BUFFER_PROPERTY = "cyclicBuffer";
@@ -150,7 +153,7 @@ public class MemoryBufferAppender extends AbstractAppender {
 						message, t));
 			}
 		} else if (formatter == null) {
-			System.err.println("Please set a formatter.");
+			Log.e(TAG, "Please set a formatter.");
 		}
 	}
 

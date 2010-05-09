@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 import com.google.code.microlog4android.appender.LogCatAppender;
 import com.google.code.microlog4android.config.DefaultLoggerRepository;
 import com.google.code.microlog4android.format.PatternFormatter;
@@ -38,7 +40,8 @@ import com.google.code.microlog4android.format.PatternFormatter;
  * @since 0.1
  */
 public final class Logger {
-
+	private static final String TAG = "Microlog.Logger";
+	
 	public static final Level DEFAULT_LOG_LEVEL = Level.DEBUG;
 	
 	public static final String DEFAULT_CLIENT_ID = "Microlog";
@@ -171,7 +174,7 @@ public final class Logger {
 			try {
 				appender.close();
 			} catch (IOException e) {
-				System.err.println("Failed to close appender. " + e);
+				Log.e(TAG, "Failed to close appender. " + e);
 			}
 		}
 		appenderList.remove(appender);
@@ -187,7 +190,7 @@ public final class Logger {
 				try {
 					appender.close();
 				} catch (IOException e) {
-					System.err.println("Failed to close appender. " + e);
+					Log.e(TAG, "Failed to close appender. " + e);
 				}
 			}
 		}
@@ -253,8 +256,7 @@ public final class Logger {
 
 			if (firstLogEvent == true) {
 				if (nofAppenders == 0) {
-					System.err
-							.println("Warning! No appender is set, using ConsoleAppender with PatternFormatter");
+					Log.w(TAG, "Warning! No appender is set, using LogCatAppender with PatternFormatter");
 					Appender appender = new LogCatAppender();
 
 					appender.setFormatter(new PatternFormatter());
@@ -265,7 +267,7 @@ public final class Logger {
 				try {
 					open();
 				} catch (IOException e) {
-					System.err.println("Failed to open the log. " + e);
+					Log.e(TAG, "Failed to open the log. " + e);
 				}
 
 				stopWatch.start();

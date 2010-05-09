@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
+import android.util.Log;
 
 import com.google.code.microlog4android.Appender;
 import com.google.code.microlog4android.Formatter;
@@ -34,6 +35,7 @@ import com.google.code.microlog4android.Logger;
  * @author Johan Karlsson
  */
 public class PropertyConfigurator {
+	private static final String TAG = "Microlog.PropertyConfiguration";
 
 	public static String DEFAULT_PROPERTIES_FILENAME = "microlog.properties";
 
@@ -69,25 +71,19 @@ public class PropertyConfigurator {
 	 */
 	public static final String TAG_PREFIX_KEY = "microlog.tag";
 
-	public static final String[] APPENDER_ALIASES = { "LogCatAppender",
-			"FileAppender" };
+	public static final String[] APPENDER_ALIASES = { "LogCatAppender", "FileAppender" };
 
-	public static final String[] APPENDER_CLASS_NAMES = {
-			"com.google.code.microlog4android.appender.LogCatAppender",
+	public static final String[] APPENDER_CLASS_NAMES = { "com.google.code.microlog4android.appender.LogCatAppender",
 			"com.google.code.microlog4android.appender.FileAppender" };
 
-	public static final String[] FORMATTER_ALIASES = { "SimpleFormatter",
-			"PatternFormatter" };
+	public static final String[] FORMATTER_ALIASES = { "SimpleFormatter", "PatternFormatter" };
 
-	public static final String[] FORMATTER_CLASS_NAMES = {
-			"com.google.code.microlog4android.format.SimpleFormatter",
+	public static final String[] FORMATTER_CLASS_NAMES = { "com.google.code.microlog4android.format.SimpleFormatter",
 			"com.google.code.microlog4android.format.PatternFormatter" };
 
-	private static final HashMap<String, String> appenderAliases = new HashMap<String, String>(
-			43);
+	private static final HashMap<String, String> appenderAliases = new HashMap<String, String>(43);
 
-	private static final HashMap<String, String> formatterAliases = new HashMap<String, String>(
-			21);
+	private static final HashMap<String, String> formatterAliases = new HashMap<String, String>(21);
 
 	private Context context;
 
@@ -95,13 +91,11 @@ public class PropertyConfigurator {
 
 	{
 		for (int index = 0; index < APPENDER_ALIASES.length; index++) {
-			appenderAliases.put(APPENDER_ALIASES[index],
-					APPENDER_CLASS_NAMES[index]);
+			appenderAliases.put(APPENDER_ALIASES[index], APPENDER_CLASS_NAMES[index]);
 		}
 
 		for (int index = 0; index < FORMATTER_ALIASES.length; index++) {
-			formatterAliases.put(FORMATTER_ALIASES[index],
-					FORMATTER_CLASS_NAMES[index]);
+			formatterAliases.put(FORMATTER_ALIASES[index], FORMATTER_CLASS_NAMES[index]);
 		}
 	};
 
@@ -147,9 +141,8 @@ public class PropertyConfigurator {
 			Properties properties = loadProperties(inputStream);
 			startConfiguration(properties);
 		} catch (IOException e) {
-			System.err
-					.println("Failed to open the microlog properties file. Hint: the file should be in the /assets directory "
-							+ filename + " " + e);
+			Log.e(TAG, "Failed to open the microlog properties file. Hint: the file should be in the /assets directory "
+					+ filename + " " + e);
 		}
 	}
 
@@ -167,13 +160,10 @@ public class PropertyConfigurator {
 			Properties properties = loadProperties(rawResource);
 			startConfiguration(properties);
 		} catch (NotFoundException e) {
-			System.err
-					.println("Did not find the microlog properties resource. Hint: this should be in the /res/raw directory "
-							+ e);
+			Log.e(TAG, "Did not find the microlog properties resource. Hint: this should be in the /res/raw directory "
+					+ e);
 		} catch (IOException e) {
-			System.err
-					.println("Failed to read the microlog properties resource."
-							+ e);
+			Log.e(TAG, "Failed to read the microlog properties resource." + e);
 		}
 	}
 
@@ -187,8 +177,7 @@ public class PropertyConfigurator {
 	 * @throws IOException
 	 *             if the loading fails.
 	 */
-	private Properties loadProperties(InputStream inputStream)
-			throws IOException {
+	private Properties loadProperties(InputStream inputStream) throws IOException {
 		Properties properties = new Properties();
 		properties.load(inputStream);
 		return properties;
@@ -202,10 +191,9 @@ public class PropertyConfigurator {
 	private void startConfiguration(Properties properties) {
 
 		if (properties.containsKey(PropertyConfigurator.ROOT_LOGGER_KEY)) {
-			System.out.println("Modern configuration, not yet supported");
+			Log.i(TAG, "Modern configuration not yet supported");
 		} else {
-			System.out
-					.println("Configure using the simple style (aka classic style)");
+			Log.i(TAG, "Configure using the simple style (aka classic style)");
 			configureSimpleStyle(properties);
 		}
 	}
@@ -214,8 +202,7 @@ public class PropertyConfigurator {
 
 		setLevel(properties);
 
-		String appenderString = properties.getProperty(
-				PropertyConfigurator.APPENDER_PREFIX_KEY, "LogCatAppender");
+		String appenderString = properties.getProperty(PropertyConfigurator.APPENDER_PREFIX_KEY, "LogCatAppender");
 		List<String> appenderList = parseAppenderString(appenderString);
 		setAppenders(appenderList);
 
@@ -223,14 +210,12 @@ public class PropertyConfigurator {
 	}
 
 	private void setLevel(Properties properties) {
-		String levelString = (String) properties
-				.get(PropertyConfigurator.LOG_LEVEL_PREFIX_KEY);
+		String levelString = (String) properties.get(PropertyConfigurator.LOG_LEVEL_PREFIX_KEY);
 		Level level = stringToLevel(levelString);
 
 		if (level != null) {
 			loggerRepository.getRootLogger().setLevel(level);
-			System.out.println("Root level: "
-					+ loggerRepository.getRootLogger().getLevel());
+			Log.i(TAG, "Root level: " + loggerRepository.getRootLogger().getLevel());
 		}
 
 	}
@@ -267,28 +252,24 @@ public class PropertyConfigurator {
 			Appender appender = (Appender) appenderClass.newInstance();
 
 			if (appender != null) {
-				System.out.println("Adding appender "
-						+ appender.getClass().getName());
+				Log.i(TAG, "Adding appender " + appender.getClass().getName());
 				rootLogger.addAppender(appender);
 			}
 
 		} catch (ClassNotFoundException e) {
-			System.err.println("Failed to find appender class: " + e);
+			Log.e(TAG, "Failed to find appender class: " + e);
 		} catch (IllegalAccessException e) {
-			System.err.println("No access to appender class: " + e);
+			Log.e(TAG, "No access to appender class: " + e);
 		} catch (InstantiationException e) {
-			System.err.println("Failed to instantiate appender class: " + e);
+			Log.e(TAG, "Failed to instantiate appender class: " + e);
 		} catch (ClassCastException e) {
-			System.err
-					.println("Specified appender class does not implement the Appender interface: "
-							+ e);
+			Log.e(TAG, "Specified appender class does not implement the Appender interface: " + e);
 		}
 	}
 
 	private void setFormatter(Properties properties) {
 
-		String formatterString = (String) properties.getProperty(
-				FORMATTER_PREFIX_KEY, "PatternFormatter");
+		String formatterString = (String) properties.getProperty(FORMATTER_PREFIX_KEY, "PatternFormatter");
 
 		String className = null;
 
@@ -304,15 +285,13 @@ public class PropertyConfigurator {
 			Class formatterClass = Class.forName(className);
 			Formatter formatter = (Formatter) formatterClass.newInstance();
 		} catch (ClassNotFoundException e) {
-			System.err.println("Failed to find Formatter class: " + e);
+			Log.e(TAG, "Failed to find Formatter class: " + e);
 		} catch (InstantiationException e) {
-			System.err.println("Failed to instantiate formtter: " + e);
+			Log.e(TAG, "Failed to instantiate formtter: " + e);
 		} catch (IllegalAccessException e) {
-			System.err.println("No access to formatter class: " + e);
+			Log.e(TAG, "No access to formatter class: " + e);
 		} catch (ClassCastException e) {
-			System.err
-					.println("Specified formatter class does not implement the Formatter interface: "
-							+ e);
+			Log.e(TAG, "Specified formatter class does not implement the Formatter interface: " + e);
 		}
 
 		// TODO Add the formatter to the appender(s)

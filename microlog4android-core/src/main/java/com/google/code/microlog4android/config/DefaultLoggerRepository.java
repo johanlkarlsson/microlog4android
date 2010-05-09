@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import android.util.Log;
+
 import com.google.code.microlog4android.Level;
 import com.google.code.microlog4android.Logger;
 
@@ -33,7 +35,8 @@ import com.google.code.microlog4android.Logger;
  */
 public enum DefaultLoggerRepository implements LoggerRepository {
 	INSTANCE;
-
+	private static final String TAG = "Microlog.DefaultLoggerRepository";
+	
 	private RepositoryNode rootNode;
 	
 	private Hashtable<String, RepositoryNode> leafNodeHashtable = new Hashtable<String, RepositoryNode>(43);
@@ -222,7 +225,7 @@ public enum DefaultLoggerRepository implements LoggerRepository {
 				try {
 					logger.close();
 				} catch (IOException e) {
-					System.err.println("Failed to close logger "+logger.getName());
+					Log.e(TAG, "Failed to close logger "+logger.getName());
 				}
 			}
 		}

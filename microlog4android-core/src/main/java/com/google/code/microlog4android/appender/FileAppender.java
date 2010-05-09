@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import android.os.Environment;
+import android.util.Log;
 
 import com.google.code.microlog4android.Appender;
 import com.google.code.microlog4android.Level;
@@ -31,7 +32,8 @@ import com.google.code.microlog4android.Level;
  * 
  */
 public class FileAppender extends AbstractAppender {
-
+	private static final String TAG = "Microlog.FileAppender";
+	
 	public static final String DEFAULT_FILENAME = "microlog.txt";
 
 	private String fileName = DEFAULT_FILENAME;
@@ -59,7 +61,7 @@ public class FileAppender extends AbstractAppender {
 		if (fileOutputStream != null) {
 			writer = new PrintWriter(fileOutputStream);
 		} else {
-			System.err.println("Failed to create the log file (no stream)");
+			Log.e(TAG, "Failed to create the log file (no stream)");
 			logOpen = false;
 		}
 
@@ -79,7 +81,7 @@ public class FileAppender extends AbstractAppender {
 	 */
 	@Override
 	public void close() throws IOException {
-		System.out.println("Closing the FileAppender");
+		Log.i(TAG, "Closing the FileAppender");
 		if (writer != null) {
 			writer.close();
 		}
@@ -102,7 +104,7 @@ public class FileAppender extends AbstractAppender {
 				throwable.printStackTrace();
 			}
 		} else if (formatter == null) {
-			System.err.println("Please set a formatter.");
+			Log.e(TAG, "Please set a formatter.");
 		}
 
 	}

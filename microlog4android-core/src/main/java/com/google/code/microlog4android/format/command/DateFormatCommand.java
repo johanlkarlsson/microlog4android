@@ -18,6 +18,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import android.util.Log;
+
 import com.google.code.microlog4android.Level;
 
 
@@ -30,7 +32,8 @@ import com.google.code.microlog4android.Level;
  * 
  */
 public class DateFormatCommand implements FormatCommandInterface {
-
+	private static final String TAG = "Microlog.DateFormatCommand";
+	
 	public static int USER_FORMAT = 0;
 
 	public final static int ABSOLUTE_FORMAT = 1;
@@ -77,7 +80,7 @@ public class DateFormatCommand implements FormatCommandInterface {
 			break;
 
 		default:
-			System.err.println("Unrecognized format, using default format.");
+			Log.e(TAG, "Unrecognized format, using default format.");
 			dateString = toAbsoluteFormat(System.currentTimeMillis());
 			break;
 		}

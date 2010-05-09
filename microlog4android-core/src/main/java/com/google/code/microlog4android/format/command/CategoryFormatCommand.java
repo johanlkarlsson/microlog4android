@@ -15,6 +15,8 @@
 
 package com.google.code.microlog4android.format.command;
 
+import android.util.Log;
+
 import com.google.code.microlog4android.Level;
 import com.google.code.microlog4android.StringUtil;
 
@@ -27,7 +29,8 @@ import com.google.code.microlog4android.StringUtil;
  * @since 1.0
  */
 public class CategoryFormatCommand implements FormatCommandInterface {
-
+	private static final String TAG = "Microlog.CategoryFormatCommand";
+	
 	public static final int FULL_CLASS_NAME_SPECIFIER = -1;
 
 	public static final int DEFAULT_PRECISION_SPECIFIER = 1;
@@ -67,9 +70,8 @@ public class CategoryFormatCommand implements FormatCommandInterface {
 			System.out.println("Precision specifier for %c is "
 					+ precisionSpecifier);
 		} catch (NumberFormatException e) {
-			System.err
-					.println("Failed to parse the specifier for the %c pattern "
-							+ e);
+			Log.e(TAG, "Failed to parse the specifier for the %c pattern "
+					+ e);
 		}
 	}
 

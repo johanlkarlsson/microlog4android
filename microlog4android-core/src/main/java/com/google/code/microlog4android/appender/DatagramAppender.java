@@ -19,6 +19,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import android.util.Log;
+
 import com.google.code.microlog4android.Level;
 
 
@@ -32,6 +34,7 @@ import com.google.code.microlog4android.Level;
  * 
  */
 public class DatagramAppender extends AbstractAppender {
+	private static final String TAG = "Microlog.DatagramAppender";
 	
 	public static final String DEFAULT_HOST = "127.0.0.1";
 
@@ -90,7 +93,7 @@ public class DatagramAppender extends AbstractAppender {
 		try {
 			datagramSocket.send(datagramPacket);
 		} catch (IOException e) {
-			System.err.println("Failed to send datagram log");
+			Log.e(TAG, "Failed to send datagram log " + e);
 		}
 	}
 

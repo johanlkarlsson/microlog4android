@@ -45,7 +45,6 @@ public enum StringUtil {
 
 		while (nofDots < parts && dotIndex > -1) {
 			dotIndex = className.lastIndexOf('.', dotIndex - 1);
-			System.out.println(dotIndex);
 			
 			if (dotIndex != -1) {
 				nofDots++;

@@ -29,6 +29,8 @@ public class MicrologLoggerFactory implements ILoggerFactory {
 			logger = new MicrologLoggerAdapter(micrologLogger);
 		}
 		
+		
+		
 		return logger;
 	}
 }
