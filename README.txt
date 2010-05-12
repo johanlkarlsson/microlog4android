@@ -1,3 +1,5 @@
+The microlog4android project brings the microlog logging library to Android. This gives the developer a powerful set of logging tools, such as logging to file or server.
+
 #####################
 # PROJECT SETUP
 #####################
