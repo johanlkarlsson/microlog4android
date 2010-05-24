@@ -1,7 +1,9 @@
-package com.google.code.microlog4android;
+package com.google.code.microlog4android.command.util;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+
+import com.google.code.microlog4android.format.command.util.StringUtil;
 
 public class StringUtilTest {
 	
@@ -16,7 +18,7 @@ public class StringUtilTest {
 	public void testExtractPartialClassName() {
 		String partialClassName = StringUtil.extractPartialClassName(StringUtilTest.class.getName(), 3);
 		
-		assertEquals("code.microlog4android.StringUtilTest", partialClassName);
+		assertEquals("command.util.StringUtilTest", partialClassName);
 	}
 	
 	@Test

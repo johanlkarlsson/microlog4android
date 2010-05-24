@@ -18,7 +18,7 @@ package com.google.code.microlog4android.format.command;
 import android.util.Log;
 
 import com.google.code.microlog4android.Level;
-import com.google.code.microlog4android.StringUtil;
+import com.google.code.microlog4android.format.command.util.StringUtil;
 
 /**
  * The <code>CategoryFormatCommand</code> is used for printing the category,

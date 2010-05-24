@@ -17,10 +17,12 @@ import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
 import android.util.Log;
 
-import com.google.code.microlog4android.Appender;
-import com.google.code.microlog4android.Formatter;
 import com.google.code.microlog4android.Level;
 import com.google.code.microlog4android.Logger;
+import com.google.code.microlog4android.appender.Appender;
+import com.google.code.microlog4android.format.Formatter;
+import com.google.code.microlog4android.repository.DefaultLoggerRepository;
+import com.google.code.microlog4android.repository.LoggerRepository;
 
 /**
  * The {@link PropertyConfigurator} is used for configuration via a properties

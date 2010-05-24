@@ -20,9 +20,9 @@ import java.util.List;
 
 import android.util.Log;
 
-import com.google.code.microlog4android.appender.LogCatAppender;
-import com.google.code.microlog4android.config.DefaultLoggerRepository;
-import com.google.code.microlog4android.format.PatternFormatter;
+import com.google.code.microlog4android.appender.Appender;
+import com.google.code.microlog4android.factory.DefaultAppenderFactory;
+import com.google.code.microlog4android.repository.CommonLoggerRepository;
 
 
 /**
@@ -41,10 +41,12 @@ import com.google.code.microlog4android.format.PatternFormatter;
  */
 public final class Logger {
 	private static final String TAG = "Microlog.Logger";
-	
+
 	public static final Level DEFAULT_LOG_LEVEL = Level.DEBUG;
-	
+
 	public static final String DEFAULT_CLIENT_ID = "Microlog";
+
+	private CommonLoggerRepository commonLoggerRepository = null;
 
 	private String clientID = DEFAULT_CLIENT_ID;
 
@@ -68,6 +70,15 @@ public final class Logger {
 	 */
 	public Logger(String name) {
 		this.name = name;
+	}
+	
+	public Logger(String name, CommonLoggerRepository commonLoggerRepository) {
+		this.name = name;
+		this.commonLoggerRepository = commonLoggerRepository;
+	}
+
+	public synchronized void setCommonRepository(final CommonLoggerRepository commonLoggerRepository) {
+		this.commonLoggerRepository = commonLoggerRepository;
 	}
 
 	/**
@@ -101,11 +112,14 @@ public final class Logger {
 	 * @return the effective logger level.
 	 */
 	public Level getEffectiveLevel() {
-		Level effectiveLevel = this.level;
+		Level effectiveLevel = level;
 
 		if (effectiveLevel == null && !name.equals("")) {
-			effectiveLevel = DefaultLoggerRepository.INSTANCE
-					.getEffectiveLevel(this);
+			if(commonLoggerRepository == null) {
+				throw new IllegalStateException("CommonLoggerRepository has not been set");
+			} else {
+				effectiveLevel = commonLoggerRepository.getEffectiveLevel(name);
+			}
 		}
 
 		return effectiveLevel;
@@ -149,8 +163,7 @@ public final class Logger {
 	 */
 	public void addAppender(Appender appender) throws IllegalArgumentException {
 		if (appender == null) {
-			throw new IllegalArgumentException(
-					"Appender not allowed to be null");
+			throw new IllegalArgumentException("Appender not allowed to be null");
 		}
 
 		if (!appenderList.contains(appender)) {
@@ -164,8 +177,7 @@ public final class Logger {
 	 * @param appender
 	 *            the <code>Appender</code> to remove.
 	 */
-	public void removeAppender(Appender appender)
-			throws IllegalArgumentException {
+	public void removeAppender(Appender appender) throws IllegalArgumentException {
 		if (appender == null) {
 			throw new IllegalArgumentException("The appender must not be null.");
 		}
@@ -185,7 +197,7 @@ public final class Logger {
 	 * 
 	 */
 	public void removeAllAppenders() {
-		for(Appender appender : appenderList) {
+		for (Appender appender : appenderList) {
 			if (appender.isLogOpen()) {
 				try {
 					appender.close();
@@ -227,8 +239,7 @@ public final class Logger {
 	 * @throws IllegalArgumentException
 	 *             if the <code>level</code> is <code>null</code>.
 	 */
-	public void log(Level level, Object message)
-			throws IllegalArgumentException {
+	public void log(Level level, Object message) throws IllegalArgumentException {
 		log(level, message, null);
 	}
 
@@ -244,22 +255,18 @@ public final class Logger {
 	 * @throws IllegalArgumentException
 	 *             if the <code>level</code> is <code>null</code>.
 	 */
-	public void log(Level level, Object message, Throwable t)
-			throws IllegalArgumentException {
+	public void log(Level level, Object message, Throwable t) throws IllegalArgumentException {
 		if (level == null) {
 			throw new IllegalArgumentException("The level must not be null.");
 		}
 
-		if (getEffectiveLevel().toInt() <= level.toInt()
-				&& level.toInt() > Level.OFF_INT) {
+		if (getEffectiveLevel().toInt() <= level.toInt() && level.toInt() > Level.OFF_INT) {
 			int nofAppenders = appenderList.size();
 
 			if (firstLogEvent == true) {
 				if (nofAppenders == 0) {
 					Log.w(TAG, "Warning! No appender is set, using LogCatAppender with PatternFormatter");
-					Appender appender = new LogCatAppender();
-
-					appender.setFormatter(new PatternFormatter());
+					Appender appender = DefaultAppenderFactory.createDefaultAppender();
 					addAppender(appender);
 					nofAppenders++;
 				}
@@ -274,9 +281,8 @@ public final class Logger {
 				firstLogEvent = false;
 			}
 
-			for(Appender appender : appenderList) {
-				appender.doLog(clientID, name, stopWatch.getCurrentTime(),
-						level, message, t);
+			for (Appender appender : appenderList) {
+				appender.doLog(clientID, name, stopWatch.getCurrentTime(), level, message, t);
 			}
 		}
 	}
@@ -454,8 +460,8 @@ public final class Logger {
 		StringBuffer stringBuffer = new StringBuffer();
 		stringBuffer.append(super.toString());
 		stringBuffer.append('[');
-		
-		for(Appender appender : appenderList) {
+
+		for (Appender appender : appenderList) {
 			stringBuffer.append(appender);
 			stringBuffer.append(';');
 		}
@@ -479,7 +485,7 @@ public final class Logger {
 	 * Open the log. The logging is now turned on.
 	 */
 	void open() throws IOException {
-		for(Appender appender : appenderList) {
+		for (Appender appender : appenderList) {
 			appender.open();
 		}
 	}
@@ -491,10 +497,10 @@ public final class Logger {
 	 *             if the <code>Logger</code> failed to close.
 	 */
 	public void close() throws IOException {
-		for(Appender appender : appenderList) {
+		for (Appender appender : appenderList) {
 			appender.close();
 		}
-		
+
 		stopWatch.stop();
 		Logger.firstLogEvent = true;
 	}

@@ -14,8 +14,10 @@
  */
 package com.google.code.microlog4android;
 
-import com.google.code.microlog4android.config.DefaultLoggerRepository;
-import com.google.code.microlog4android.config.LoggerRepository;
+import com.google.code.microlog4android.factory.DefaultRepositoryFactory;
+import com.google.code.microlog4android.repository.LoggerRepository;
+
+
 
 /**
  * This is the public logger factory to be used by the end user.
@@ -28,8 +30,7 @@ public class LoggerFactory {
 	/**
 	 * The reference to the underlying logger repository.
 	 */
-	private static final LoggerRepository loggerRepository = DefaultLoggerRepository
-			.INSTANCE;
+	private static final LoggerRepository loggerRepository = DefaultRepositoryFactory.getDefaultLoggerRepository();
 
 	/**
 	 * The un-named logger. This is the classic Microlog method, that is
@@ -53,6 +54,7 @@ public class LoggerFactory {
 			throw new IllegalArgumentException(
 					"The Logger name must not be null.");
 		}
+		
 		return loggerRepository.getLogger(name);
 	}
 

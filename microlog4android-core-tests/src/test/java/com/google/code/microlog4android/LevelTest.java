@@ -1,7 +1,9 @@
 package com.google.code.microlog4android;
 
 import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
+
 
 public class LevelTest {
 	

@@ -16,9 +16,8 @@ package com.google.code.microlog4android.appender;
 
 import java.io.IOException;
 
-import com.google.code.microlog4android.Appender;
-import com.google.code.microlog4android.Formatter;
 import com.google.code.microlog4android.Level;
+import com.google.code.microlog4android.format.Formatter;
 import com.google.code.microlog4android.format.SimpleFormatter;
 
 
@@ -46,7 +45,7 @@ public abstract class AbstractAppender implements Appender {
 	 * Set the <code>Formatter</code> object that is used for formatting the
 	 * output.
 	 * 
-	 * @see com.google.code.microlog4android.Appender#setFormatter(com.google.code.microlog4android.Formatter)
+	 * @see com.google.code.microlog4android.appender.Appender#setFormatter(com.google.code.microlog4android.format.Formatter)
 	 * @throws IllegalArgumentException
 	 *             if the <code>formatter</code> is <code>null</code>.
 	 */
@@ -65,7 +64,7 @@ public abstract class AbstractAppender implements Appender {
 	 * Get the <code>Formatter</code> object that is used for formatting the
 	 * output.
 	 * 
-	 * @see com.google.code.microlog4android.Appender#getFormatter()
+	 * @see com.google.code.microlog4android.appender.Appender#getFormatter()
 	 */
 	public final Formatter getFormatter() {
 		return formatter;
@@ -97,21 +96,21 @@ public abstract class AbstractAppender implements Appender {
 	/**
 	 * Clear the log.
 	 * 
-	 * @see com.google.code.microlog4android.Appender#clear()
+	 * @see com.google.code.microlog4android.appender.Appender#clear()
 	 */
 	public abstract void clear();
 
 	/**
 	 * Close the log.
 	 * 
-	 * @see com.google.code.microlog4android.Appender#close()
+	 * @see com.google.code.microlog4android.appender.Appender#close()
 	 */
 	public abstract void close() throws IOException;
 
 	/**
 	 * Open the log.
 	 * 
-	 * @see com.google.code.microlog4android.Appender#open()
+	 * @see com.google.code.microlog4android.appender.Appender#open()
 	 */
 	public abstract void open() throws IOException;
 

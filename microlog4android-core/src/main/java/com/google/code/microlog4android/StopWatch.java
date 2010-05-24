@@ -20,7 +20,7 @@ package com.google.code.microlog4android;
  * 
  * @author Johan Karlsson (johan.karlsson@jayway.se)
  */
-public class StopWatch {
+class StopWatch {
 
 	private boolean started;
 	private long startTime;

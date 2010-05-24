@@ -9,8 +9,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.code.microlog4android.appender.Appender;
 import com.google.code.microlog4android.appender.FileAppender;
-import com.google.code.microlog4android.config.DefaultLoggerRepository;
+import com.google.code.microlog4android.repository.DefaultLoggerRepository;
 
 public class LoggerTest {
 	private Logger logger;
@@ -18,6 +19,7 @@ public class LoggerTest {
 	@Before
 	public void setup() {
 		logger = new Logger(LoggerTest.class.getName());
+		logger.setCommonRepository(DefaultLoggerRepository.INSTANCE);
 	}
 
 	@After
@@ -131,5 +133,12 @@ public class LoggerTest {
 		logger.log(Level.DEBUG, "test");
 
 		verifyZeroInteractions(mockedAppender);
+	}
+	
+	@Test
+	public void testDefaultLevel() {
+		Logger defaultLevelLogger = DefaultLoggerRepository.INSTANCE.getLogger(LoggerTest.class.getName());
+		
+		assertEquals(Level.DEBUG, defaultLevelLogger.getEffectiveLevel());
 	}
 }

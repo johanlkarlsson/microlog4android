@@ -22,7 +22,6 @@ import java.io.PrintWriter;
 import android.os.Environment;
 import android.util.Log;
 
-import com.google.code.microlog4android.Appender;
 import com.google.code.microlog4android.Level;
 
 /**
@@ -110,7 +109,7 @@ public class FileAppender extends AbstractAppender {
 	}
 
 	/**
-	 * @see com.google.code.microlog4android.Appender#getLogSize()
+	 * @see com.google.code.microlog4android.appender.Appender#getLogSize()
 	 */
 	public long getLogSize() {
 		return Appender.SIZE_UNDEFINED;

@@ -1,7 +1,9 @@
 package org.slf4j.impl;
 
 import org.slf4j.helpers.MarkerIgnoringBase;
+import org.slf4j.impl.repository.Slf4jLoggerRepository;
 
+import com.google.code.microlog4android.Level;
 import com.google.code.microlog4android.Logger;
 
 /**
@@ -14,12 +16,25 @@ public class MicrologLoggerAdapter extends MarkerIgnoringBase {
 	
 	private final Logger logger;
 	
-	MicrologLoggerAdapter(final Logger logger) {
+	public MicrologLoggerAdapter(final Logger logger) {
 		this.logger = logger;
+		logger.setCommonRepository(Slf4jLoggerRepository.INSTANCE);
 	}
 
+	public MicrologLoggerAdapter(final String name) {
+		logger = new Logger(name, Slf4jLoggerRepository.INSTANCE);
+	}
+	
+	public Logger getMicrologLogger() {
+		return logger;
+	}
+	
+	public String getName() {
+		return logger.getName();
+	}
+	
 	public boolean isTraceEnabled() {
-		return logger.isTraceEnabled();
+		return isLoggerEnabled(Level.TRACE);
 	}
 
 	public void trace(final String msg) {
@@ -28,14 +43,17 @@ public class MicrologLoggerAdapter extends MarkerIgnoringBase {
 
 	public void trace(final String format, final Object param1) {
 		// TODO trace format + object
+		throw new UnsupportedOperationException("trace(String, Object) is not implemented yet");
 	}
 
 	public void trace(final String format, final Object param1, final Object param2) {
 		// TODO trace format + multiple objects
+		throw new UnsupportedOperationException("trace(String, Object, Object) is not implemented yet");
 	}
 	
 	public void trace(final String format, final Object[] argArray) {
 		// TODO trace format + object array
+		throw new UnsupportedOperationException("trace(String, Object[]) is not implemented yet");
 	}
 
 	public void trace(final String msg, final Throwable t) {
@@ -43,7 +61,7 @@ public class MicrologLoggerAdapter extends MarkerIgnoringBase {
 	}
 
 	public boolean isDebugEnabled() {
-		return logger.isDebugEnabled();
+		return isLoggerEnabled(Level.DEBUG);
 	}
 
 	public void debug(final String msg) {
@@ -52,14 +70,17 @@ public class MicrologLoggerAdapter extends MarkerIgnoringBase {
 
 	public void debug(final String format, final Object arg1) {
 		// TODO debug format + object
+		throw new UnsupportedOperationException("debug(String, Object) is not implemented yet");
 	}
 
 	public void debug(final String format, final Object param1, final Object param2) {
 		// TODO debug format + multiple objects
+		throw new UnsupportedOperationException("debug(String, Object, Object) is not implemented yet");
 	}
 
 	public void debug(final String format, final Object[] argArray) {
 		// TODO debug format + object array
+		throw new UnsupportedOperationException("debug(String, Object[]) is not implemented yet");
 	}
 
 	public void debug(final String msg, final Throwable t) {
@@ -67,7 +88,7 @@ public class MicrologLoggerAdapter extends MarkerIgnoringBase {
 	}
 
 	public boolean isInfoEnabled() {
-		return logger.isInfoEnabled();
+		return isLoggerEnabled(Level.INFO);
 	}
 
 	public void info(final String msg) {
@@ -75,15 +96,18 @@ public class MicrologLoggerAdapter extends MarkerIgnoringBase {
 	}
 
 	public void info(final String format, final Object arg) {
-		// info format + object
+		// TODO info format + object
+		throw new UnsupportedOperationException("info(String, Object) is not implemented yet");
 	}
 
 	public void info(final String format, final Object arg1, final Object arg2) {
 		// TODO info format + multiple objects
+		throw new UnsupportedOperationException("info(String, Object, Object) is not implemented yet");
 	}
 
 	public void info(final String format, final Object[] argArray) {
 		// TODO info format + object array
+		throw new UnsupportedOperationException("info(String, Object[]) is not implemented yet");
 	}
 
 	public void info(final String msg, final Throwable t) {
@@ -100,10 +124,12 @@ public class MicrologLoggerAdapter extends MarkerIgnoringBase {
 
 	public void warn(final String format, final Object arg) {
 		// TODO warn format + object
+		throw new UnsupportedOperationException("warn(String, Object) is not implemented yet");
 	}
 
 	public void warn(final String format, final Object arg1, final Object arg2) {
 		// TODO warn format + multiple objects
+		throw new UnsupportedOperationException("warn(String, Object, Object) is not implemented yet");
 	}
 
 	public void warn(final String format, final Object[] argArray) {
@@ -124,38 +150,24 @@ public class MicrologLoggerAdapter extends MarkerIgnoringBase {
 
 	public void error(final String format, final Object arg) {
 		// TODO error format + object
+		throw new UnsupportedOperationException("error(String, Object) is not implemented yet");
 	}
 
 	public void error(final String format, final Object arg1, final Object arg2) {
 		// TODO error format + multiple objects
+		throw new UnsupportedOperationException("error(String, Object, Object) is not implemented yet");
 	}
 
 	public void error(final String format, final Object[] argArray) {
 		// TODO error format + object array
+		throw new UnsupportedOperationException("error(String, Object[]) is not implemented yet");
 	}
 
 	public void error(final String msg, final Throwable t) {
 		logger.error(msg, t);
 	}
-
-	/**
-	 * For formatted messages substitute arguments.
-	 * 
-	 * @param format
-	 * @param arg1
-	 * @param arg2
-	 */
-//	private String format(final String format, final Object arg1, final Object arg2) {
-//		return MessageFormatter.format(format, arg1, arg2);
-//	}
-
-	/**
-	 * For formatted messages substitute arguments.
-	 * 
-	 * @param format
-	 * @param args
-	 */
-//	private String format(final String format, final Object[] args) {
-//		return MessageFormatter.arrayFormat(format, args);
-//	}
+	
+	private boolean isLoggerEnabled(final Level level) {
+		return logger.getEffectiveLevel().toInt() <= level.toInt();
+	}
 }

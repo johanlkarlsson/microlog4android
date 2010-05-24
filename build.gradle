@@ -47,7 +47,11 @@ task unpackFatJar(dependsOn: jar) << {
 }
 
 task deleteUnusedJar(dependsOn: unpackFatJar) << {
-	findMicrologJar().delete()
+	File micrologJar = findMicrologJar()
+
+	if(micrologJar != null) {
+		findMicrologJar().delete()
+	}
 }
 
 /*

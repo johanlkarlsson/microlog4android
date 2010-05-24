@@ -1,6 +1,7 @@
 package org.slf4j.impl;
 
 import org.slf4j.ILoggerFactory;
+import org.slf4j.impl.repository.Slf4jLoggerRepository;
 import org.slf4j.spi.LoggerFactoryBinder;
 
 public enum StaticLoggerBinder implements LoggerFactoryBinder{
@@ -22,7 +23,7 @@ public enum StaticLoggerBinder implements LoggerFactoryBinder{
 	// to avoid constant folding by the compiler, this field must *not* be final
 	public static String REQUESTED_API_VERSION = "1.5.11"; // !final
 
-	private static final String loggerFactoryClassStr = MicrologLoggerFactory.class.getName();
+	private static final String loggerFactoryClassStr = Slf4jLoggerRepository.class.getName();
 
 	/**
 	 * The ILoggerFactory instance returned by the {@link #getLoggerFactory}
@@ -31,7 +32,7 @@ public enum StaticLoggerBinder implements LoggerFactoryBinder{
 	private final ILoggerFactory loggerFactory;
 
 	private StaticLoggerBinder() {
-		loggerFactory = new MicrologLoggerFactory();
+		loggerFactory = Slf4jLoggerRepository.INSTANCE;
 	}
 
 	public ILoggerFactory getLoggerFactory() {

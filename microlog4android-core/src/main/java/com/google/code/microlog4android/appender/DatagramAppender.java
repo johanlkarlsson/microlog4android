@@ -119,7 +119,7 @@ public class DatagramAppender extends AbstractAppender {
 	}
 
 	/**
-	 * @see com.google.code.microlog4android.Appender#getLogSize()
+	 * @see com.google.code.microlog4android.appender.Appender#getLogSize()
 	 */
 	public long getLogSize() {
 		return SIZE_UNDEFINED;

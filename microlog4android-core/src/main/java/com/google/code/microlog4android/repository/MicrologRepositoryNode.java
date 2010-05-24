@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.google.code.microlog4android.config;
+package com.google.code.microlog4android.repository;
 
 import java.util.Hashtable;
 
@@ -22,31 +22,17 @@ import com.google.code.microlog4android.Logger;
 
 
 
+
 /**
  * @author Johan Karlsson (johan.karlsson@jayway.se)
  * 
  */
-public class RepositoryNode {
+public class MicrologRepositoryNode extends AbstractRepositoryNode {
+	private MicrologRepositoryNode parent = null;
 
-	protected String name;
-	
-	protected RepositoryNode parent;
+	private Hashtable<String, MicrologRepositoryNode> children = new Hashtable<String, MicrologRepositoryNode>(17);
 
-	protected Hashtable<String, RepositoryNode> children = new Hashtable<String, RepositoryNode>(17);
-
-	protected Logger logger;
-	
-	protected Level level;
-
-	/**
-	 * Create a <code>TreeNode</code> with the specified name.
-	 * 
-	 * @param name
-	 *            the name of the <code>TreeNode</code>
-	 */
-	public RepositoryNode(String name) {
-		this.name = name;
-	}
+	private Logger logger;
 
 	/**
 	 * Create a <code>TreeNode</code> with the specified name and the
@@ -58,28 +44,26 @@ public class RepositoryNode {
 	 *            the <code>Logger</code> to be associated with the
 	 *            <code>TreeNode</code>
 	 */
-	public RepositoryNode(String name, Logger logger) {
-		super();
+	public MicrologRepositoryNode(String name, Logger logger) {
 		this.name = name;
 		this.logger = logger;
 	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @param name
-	 *            the name to set
-	 */
-	public void setName(String name) {
+	
+	public MicrologRepositoryNode(String name, MicrologRepositoryNode parent) {
 		this.name = name;
+		this.parent = parent;
+		this.logger = new Logger(name);
+		logger.setCommonRepository(DefaultLoggerRepository.INSTANCE);
+	}
+	
+	public MicrologRepositoryNode(String name, Logger logger, MicrologRepositoryNode parent) {
+		this.name = name;
+		this.logger = logger;
+		this.parent = parent;
 	}
 
-	public void addChild(RepositoryNode child) {
+
+	public void addChild(MicrologRepositoryNode child) {
 		children.put(child.getName(), child);
 	}
 
@@ -90,48 +74,30 @@ public class RepositoryNode {
 		return logger;
 	}
 
-	/**
-	 * @param logger
-	 *            the logger to set
-	 */
-	public void setLogger(Logger logger) {
-		this.logger = logger;
-	}
-	
-	public Level getLevel(){
-		Level nodeLevel = level;
-		
-		if(logger != null){
-			nodeLevel = logger.getLevel();
-		}
-		
-		return nodeLevel;
-	}
-
-	public RepositoryNode getChildNode(String name) {
+	public MicrologRepositoryNode getChildNode(String name) {
 		return children.get(name);
 	}
 	
 	/**
 	 * Remove all the children.
 	 */
-	public void removeAllChildren(){
+	public void resetLogger(){
 		children.clear();
+		logger.resetLogger();
+		logger.setLevel(Level.DEBUG);
 	}
 
 	/**
 	 * @return the parent
 	 */
-	public RepositoryNode getParent() {
+	public MicrologRepositoryNode getParent() {
 		return parent;
 	}
 
 	/**
 	 * @param parent the parent to set
 	 */
-	public void setParent(RepositoryNode parent) {
+	public void setParent(MicrologRepositoryNode parent) {
 		this.parent = parent;
 	}
-	
-	
 }

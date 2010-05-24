@@ -12,10 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.code.microlog4android.config;
+package com.google.code.microlog4android.repository;
 
 import com.google.code.microlog4android.Level;
 import com.google.code.microlog4android.Logger;
+
+
+
+
+
+
 
 public interface LoggerRepository {
 
@@ -43,15 +49,6 @@ public interface LoggerRepository {
 	 *            the level to set.
 	 */
 	public void setLevel(String name, Level level);
-
-	/**
-	 * Get the effective level for the specified logger. Note that the level of
-	 * the current logger is not checked, since this level could be get from the
-	 * logger itself.
-	 * 
-	 * @return the effective <code>Level</code>
-	 */
-	public Level getEffectiveLevel(Logger logger);
 
 	/**
 	 * Check if the <code>LoggerRepository</code> contains the specified
@@ -83,5 +80,4 @@ public interface LoggerRepository {
 	 * resources.
 	 */
 	public void shutdown();
-
 }

@@ -19,7 +19,6 @@ import java.util.Vector;
 
 import android.util.Log;
 
-import com.google.code.microlog4android.Formatter;
 import com.google.code.microlog4android.Level;
 import com.google.code.microlog4android.format.command.CategoryFormatCommand;
 import com.google.code.microlog4android.format.command.ClientIdFormatCommand;
@@ -105,7 +104,7 @@ public class PatternFormatter implements Formatter {
 	/**
 	 * Format the input parameters.
 	 * 
-	 * @see com.google.code.microlog4android.Formatter#format(String, String, long,
+	 * @see com.google.code.microlog4android.format.Formatter#format(String, String, long,
 	 *      com.google.code.microlog4android.Level, java.lang.Object, java.lang.Throwable)
 	 */
 	public String format(String clientID, String name, long time, Level level,
@@ -280,7 +279,7 @@ public class PatternFormatter implements Formatter {
 	}
 
 	/**
-	 * @see com.google.code.microlog4android.Formatter#setProperty(java.lang.String,
+	 * @see com.google.code.microlog4android.format.Formatter#setProperty(java.lang.String,
 	 *      java.lang.String)
 	 */
 	public void setProperty(String name, String value) {
