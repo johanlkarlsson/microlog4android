@@ -1,4 +1,4 @@
-defaultTasks 'packageAndroidLib'
+defaultTasks 'createModifiedJarFile'
 
 /*
  * CREATE TESTABLE ANDROID.JAR
@@ -10,13 +10,7 @@ libClassesDir = libDir + '/classes'
 libJarDir = libDir + '/jar'
 jarFileName = 'modified-android.jar'
 
-task emptyLibDir {
-	ant.delete(dir: libDir)
-	ant.mkdir(dir: libClassesDir)
-	ant.mkdir(dir: libJarDir)
-}
-
-task initAndroidFiles(dependsOn: emptyLibDir, type: Copy) {
+task initAndroidFiles(type: Copy) {
 	from zipTree(androidSdkPath + '/platforms/android-3/android.jar')
 	include '**/*.class'
 	exclude 'java*/**'
@@ -26,23 +20,19 @@ task initAndroidFiles(dependsOn: emptyLibDir, type: Copy) {
 	into libClassesDir
 }
 
-task createJarFile(dependsOn: initAndroidFiles, type: Zip) {
-	from libClassesDir
-	archiveName = jarFileName
-	//into libJarDir // -> not working, the jar file is added to build/distributions anyway
-}
-
 /* 
- * This task should be unnecessary but for some reason the 'into' tag on the Zip task does not work... 
  * You might need to set the JAVA_OPTS -Xmx512m option to avoid running out of memory for this task
  */
-task packageAndroidLib(dependsOn: createJarFile) {
-	copy {
-		from distsDir
-		include jarFileName
-		into libJarDir
-	}
+task createModifiedJarFile(dependsOn: initAndroidFiles, type: Zip) {
+	from libClassesDir
+	archiveName = jarFileName
+	destinationDir = new File(libJarDir)
 }
+
+
+
+
+
 
 /*
  * CODE FOR THE ANDROID GRADLE PLUGIN, NOT USED YET!
