@@ -9,8 +9,19 @@ libDir = 'lib'
 libClassesDir = libDir + '/classes'
 libJarDir = libDir + '/jar'
 jarFileName = 'modified-android.jar'
-
+	
 task initAndroidFiles(type: Copy) {
+	Properties sdkProps = new Properties()
+	sdkProps.load(new FileInputStream(new File('android-sdk-path.properties')))
+	
+	androidSdkPath = sdkProps.getProperty('androidSdkPath')
+	
+	if(androidSdkPath == null || "".equals(androidSdkPath)) {
+		throw new RuntimeException("YOU NEED TO SET THE PATH TO THE ANDROID SDK IN THE android-sdk-path.properties FILE!")
+	} else {
+		print 'ANDROID SDK: ' + androidSdkPath
+	}
+	
 	from zipTree(androidSdkPath + '/platforms/android-3/android.jar')
 	include '**/*.class'
 	exclude 'java*/**'

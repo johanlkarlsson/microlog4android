@@ -4,7 +4,7 @@ The microlog4android project brings the microlog logging library to Android. Thi
 # PROJECT SETUP
 #####################
 1. Download source code from github: git clone git@github.com:johanlkarlsson/microlog4android.git
-2. In the root directory of the project (microlog4android folder) edit the gradle.properties file.
+2. In the root directory of the project (microlog4android folder) edit the android-sdk-path.properties file.
    Change the value of the androidSdkPath-property to point to the Android SDK on you local machine.
 3. Run "gradle -b build-android_lib.gradle". This will generate modified version of the android.jar file in the lib-folder.
    This task can get an OutOfMemory exception. To fix this simply add set: JAVA_OPTS -Xmx512m
