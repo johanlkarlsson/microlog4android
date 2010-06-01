@@ -7,3 +7,6 @@ http://dtmilano.blogspot.com/2009/07/android-testing-on-android-platform_4442.ht
 
 Unit and functional testing in Android:
 http://mihaifonoage.blogspot.com/2010/01/unit-and-functional-testing-in-android.html
+
+Traceview:
+http://developer.android.com/guide/developing/tools/traceview.html

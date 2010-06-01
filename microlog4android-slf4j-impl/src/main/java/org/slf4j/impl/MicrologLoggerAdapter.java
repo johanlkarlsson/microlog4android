@@ -1,5 +1,7 @@
 package org.slf4j.impl;
 
+import java.io.ObjectStreamException;
+
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.impl.repository.Slf4jLoggerRepository;
 
@@ -14,15 +16,17 @@ import com.google.code.microlog4android.Logger;
 public class MicrologLoggerAdapter extends MarkerIgnoringBase {
 	private static final long serialVersionUID = 3934653965724860568L;
 	
-	private final Logger logger;
+	private transient final Logger logger;
 	
 	public MicrologLoggerAdapter(final Logger logger) {
 		this.logger = logger;
+		this.name = logger.getName();
 		logger.setCommonRepository(Slf4jLoggerRepository.INSTANCE);
 	}
 
 	public MicrologLoggerAdapter(final String name) {
 		logger = new Logger(name, Slf4jLoggerRepository.INSTANCE);
+		this.name = name;
 	}
 	
 	public Logger getMicrologLogger() {
@@ -59,7 +63,7 @@ public class MicrologLoggerAdapter extends MarkerIgnoringBase {
 	public void trace(final String msg, final Throwable t) {
 		logger.trace(msg, t);
 	}
-
+	
 	public boolean isDebugEnabled() {
 		return isLoggerEnabled(Level.DEBUG);
 	}
@@ -170,4 +174,5 @@ public class MicrologLoggerAdapter extends MarkerIgnoringBase {
 	private boolean isLoggerEnabled(final Level level) {
 		return logger.getEffectiveLevel().toInt() <= level.toInt();
 	}
+	
 }

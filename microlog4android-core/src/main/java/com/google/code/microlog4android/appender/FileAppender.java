@@ -46,25 +46,26 @@ public class FileAppender extends AbstractAppender {
 	 */
 	@Override
 	public void open() throws IOException {
-		
 		File logFile = getSDCardFile();
-		FileOutputStream fileOutputStream = null;
+		logOpen = false;
 
 		if (logFile != null) {
 			if (!logFile.exists()) {
-				logFile.createNewFile();
+				if(!logFile.createNewFile()) {
+					Log.e(TAG, "Unable to create new log file");
+					
+				}
 			}
-			fileOutputStream = new FileOutputStream(logFile, append);
+			
+			FileOutputStream fileOutputStream = new FileOutputStream(logFile, append);
+			
+			if(fileOutputStream != null) {
+				writer = new PrintWriter(fileOutputStream);
+				logOpen = true;
+			} else {
+				Log.e(TAG, "Failed to create the log file (no stream)");
+			}
 		}
-
-		if (fileOutputStream != null) {
-			writer = new PrintWriter(fileOutputStream);
-		} else {
-			Log.e(TAG, "Failed to create the log file (no stream)");
-			logOpen = false;
-		}
-
-		logOpen = true;
 	}
 
 	/**
@@ -148,6 +149,10 @@ public class FileAppender extends AbstractAppender {
 		if (externalStorageState.equals(Environment.MEDIA_MOUNTED)
 				&& externalStorageDirectory != null) {
 			file = new File(externalStorageDirectory, fileName);
+		}
+		
+		if(file == null) {
+			Log.e(TAG, "Unable to open log file from external storage");
 		}
 
 		return file;
