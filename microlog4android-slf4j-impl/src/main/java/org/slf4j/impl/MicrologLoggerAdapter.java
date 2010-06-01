@@ -14,6 +14,7 @@ import com.google.code.microlog4android.Logger;
 public class MicrologLoggerAdapter extends MarkerIgnoringBase {
 	private static final long serialVersionUID = 3934653965724860568L;
 	
+	// This is deserialized by the readResolve method in the NamedLoggerBase class
 	private transient final Logger logger;
 	
 	public MicrologLoggerAdapter(final Logger logger) {
