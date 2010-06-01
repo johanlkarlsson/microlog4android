@@ -1,7 +1,5 @@
 package org.slf4j.impl;
 
-import java.io.ObjectStreamException;
-
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.impl.repository.Slf4jLoggerRepository;
 

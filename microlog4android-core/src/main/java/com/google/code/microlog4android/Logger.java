@@ -261,15 +261,9 @@ public final class Logger {
 		}
 
 		if (getEffectiveLevel().toInt() <= level.toInt() && level.toInt() > Level.OFF_INT) {
-			int nofAppenders = appenderList.size();
-
+			
 			if (firstLogEvent == true) {
-				if (nofAppenders == 0) {
-					Log.w(TAG, "Warning! No appender is set, using LogCatAppender with PatternFormatter");
-					Appender appender = DefaultAppenderFactory.createDefaultAppender();
-					addAppender(appender);
-					nofAppenders++;
-				}
+				addDefaultAppender();
 
 				try {
 					open();
@@ -284,6 +278,14 @@ public final class Logger {
 			for (Appender appender : appenderList) {
 				appender.doLog(clientID, name, stopWatch.getCurrentTime(), level, message, t);
 			}
+		}
+	}
+	
+	private void addDefaultAppender() {
+		if(appenderList.size() == 0) {
+			Log.w(TAG, "Warning! No appender is set, using LogCatAppender with PatternFormatter");
+			Appender appender = DefaultAppenderFactory.createDefaultAppender();
+			addAppender(appender);
 		}
 	}
 
