@@ -1,7 +1,7 @@
-defaultTasks 	/* Core */					'microlog4android-core:clean', 'microlog4android-core:build',
+defaultTasks 	/* Core */					'microlog4android-core:clean', 'microlog4android-core:build', 'microlog4android-core:javadoc',
 				/* Core tests */			'microlog4android-core-tests:clean', 'microlog4android-core-tests:test',
-				/* slf4j impl */			'microlog4android-slf4j-impl:clean', 'microlog4android-slf4j-impl:build',
-				/* package modules */		'clean', 'copyJarToIntegrationTests'
+				/* slf4j impl */			'microlog4android-slf4j-impl:clean', 'microlog4android-slf4j-impl:build', 'microlog4android-slf4j-impl:javadoc',
+				/* package modules */		'clean', 'packageDistribution'
 
 
 allprojects {
@@ -35,6 +35,7 @@ jar {
 }
 
 tempJarFiles = buildDirName + '/tmp-classes'
+tempDistFolder = buildDirName + '/tmp-dist'
 
 task unpackFatJar(dependsOn: jar) << {
 	copy {
@@ -76,12 +77,42 @@ task packageJar(dependsOn: deleteUnusedJar, type: Zip) {
 }
 
 /*
- * Copies the packaged jar file into the integration-tests project
+ * Copies the application files to create the dist archive file and to the integration module for the emulator tests
  */
-task copyJarToIntegrationTests(dependsOn: packageJar) << {
+task copyApplicationFiles(dependsOn: packageJar) << {
+	// Copies the javadoc from the core module to its own folder
+	copy {
+		from 'microlog4android-core/build/docs'
+		include '**/*'
+		into docsDir.getPath() + '/m4a-core'
+	}
+	
+	// Copies the javadoc from the slf4j-impl module to its own folder
+	copy {
+		from 'microlog4android-slf4j-impl/build/docs'
+		include '**/*'
+		into docsDir.getPath() + '/m4a-slf4j-impl'
+	}
+	
+	// Creates the temporary dist folder and copies the jar
+	new File(tempDistFolder).mkdirs()
+	
+	copy {
+		from distsDir
+		include '*.jar'
+		into tempDistFolder
+	}	
+	
+	// Copies the packaged jar file into the integration-tests project
 	copy {
 		from distsDir
 		include '*.jar'
 		into 'microlog4android-integration-tests/libs'
 	}
+}
+
+task packageDistribution(dependsOn: copyApplicationFiles, type: Zip) {
+	from tempDistFolder
+	from docsDir
+	baseName = 'microlog4android-dist'
 }
