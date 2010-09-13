@@ -286,6 +286,18 @@ public class PropertyConfigurator {
 		try {
 			Class formatterClass = Class.forName(className);
 			Formatter formatter = (Formatter) formatterClass.newInstance();
+			
+			// TODO Add property setup of the formatter.
+			
+			if(formatter != null){
+				Logger rootLogger = loggerRepository.getRootLogger();
+				
+				int numberOfAppenders = rootLogger.getNumberOfAppenders();
+				for(int appenderNo=0; appenderNo < numberOfAppenders; appenderNo++){
+					Appender appender = rootLogger.getAppender(appenderNo);
+					appender.setFormatter(formatter);
+				}
+			}
 		} catch (ClassNotFoundException e) {
 			Log.e(TAG, "Failed to find Formatter class: " + e);
 		} catch (InstantiationException e) {
@@ -294,9 +306,7 @@ public class PropertyConfigurator {
 			Log.e(TAG, "No access to formatter class: " + e);
 		} catch (ClassCastException e) {
 			Log.e(TAG, "Specified formatter class does not implement the Formatter interface: " + e);
-		}
-
-		// TODO Add the formatter to the appender(s)
+		}		
 	}
 
 	/**
