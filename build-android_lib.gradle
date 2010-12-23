@@ -22,7 +22,28 @@ task initAndroidFiles(type: Copy) {
 		print 'ANDROID SDK: ' + androidSdkPath
 	}
 	
-	from zipTree(androidSdkPath + '/platforms/android-3/android.jar')
+	/*
+	* I believe Android SDK files for 1.5 may exist under platforms/andriod-3 or under platforms/android-1.5 depending on
+	* which version of sdk manager was used to download the platform files.
+	*/
+	androidJar1 = androidSdkPath + '/platforms/android-3/android.jar';
+	androidJar2 = androidSdkPath + '/platforms/android-1.5/android.jar';
+
+	jar1Exists = new File(androidJar1).exists();
+
+	jar2Exists = new File(androidJar2).exists();
+	
+	if( jar1Exists ) {
+		androidJar = androidJar1;
+	} else if ( jar2Exists ) {
+		androidJar = androidJar2;
+	} else {
+		throw new RuntimeException("Android jar file not found at " + androidJar1 + "\n" +
+						" or " + androidJar2 + " please make sure you've installed SDK platform 1.5 using\n"+
+						" the android SDK and AVD Manager");
+	}
+	
+	from zipTree(androidJar)
 	include '**/*.class'
 	exclude 'java*/**'
 	exclude 'junit/**'
