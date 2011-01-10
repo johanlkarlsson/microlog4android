@@ -18,7 +18,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
@@ -28,25 +31,51 @@ import com.google.code.microlog4android.Level;
  * An appender to log to a file in on the SDCard.
  * 
  * @author Johan Karlsson
+ * @author Dan Walkes
  * 
  */
 public class FileAppender extends AbstractAppender {
 	private static final String TAG = "Microlog.FileAppender";
 	
 	public static final String DEFAULT_FILENAME = "microlog.txt";
-
+	
 	private String fileName = DEFAULT_FILENAME;
 
 	private PrintWriter writer;
 
 	private boolean append = false;
+	
+	private File mSdCardLogFile = null;
+	
+	Context mContext = null;
+	
+	/**
+	 * Create a file appender using the specified application context.
+	 * Note: your application must hold android.permission.WRITE_EXTERNAL_STORAGE
+	 * to be able to access the SDCard.
+	 * @param c
+	 */
+	public FileAppender(Context c) {
+		mContext = c;
+	}
+
+	/**
+	 * Create a file appender without application context.  The logging file will
+	 * be placed in the root folder and will not be removed when your application is
+	 * removed.  Use FileAppender(Context) to create a log that is automatically removed
+	 * when your application is removed
+	 * Note: your application must hold android.permission.WRITE_EXTERNAL_STORAGE
+	 * to be able to access the SDCard.
+	 */
+	public FileAppender() {
+	}
 
 	/**
 	 * @see com.google.code.microlog4android.appender.AbstractAppender#open()
 	 */
 	@Override
 	public void open() throws IOException {
-		File logFile = getSDCardFile();
+		File logFile = getLogFile();
 		logOpen = false;
 
 		if (logFile != null) {
@@ -134,28 +163,82 @@ public class FileAppender extends AbstractAppender {
 	 * all again when starting a new session.
 	 * 
 	 * @param append
-	 *            the append to set
+	 *            the append to set (default = false)
 	 */
 	public void setAppend(boolean append) {
 		this.append = append;
 	}
 
-	private File getSDCardFile() {
-		String externalStorageState = Environment.getExternalStorageState();
+	/**
+	 * Android 1.6-2.1 used {@link Environment#getExternalStorageDirectory()} 
+	 *  to return the (root)
+	 * external storage directory.  Folders in this subdir were shared by all applications
+	 * and were not removed when the application was deleted.
+	 * Starting with andriod 2.2, Context.getExternalFilesDir() is available.  
+	 * This is an external directory available to the application which is removed when the application
+	 * is removed.
+	 * 
+	 * This implementation uses Context.getExternalFilesDir() if available, if not available uses 
+	 * {@link Environment#getExternalStorageDirectory()}. 
+	 * 
+	 * @return a File object representing the external storage directory
+	 * used by this device or null if the subdir could not be created or proven to exist
+	 */
+	protected File getExternalStorageDirectory() {
+
 		File externalStorageDirectory = Environment
-				.getExternalStorageDirectory();
-		File file = null;
-
-		if (externalStorageState.equals(Environment.MEDIA_MOUNTED)
-				&& externalStorageDirectory != null) {
-			file = new File(externalStorageDirectory, fileName);
-		}
+			.getExternalStorageDirectory();
 		
-		if(file == null) {
-			Log.e(TAG, "Unable to open log file from external storage");
+		int sdk = new Integer(Build.VERSION.SDK);
+		if(sdk>=8 && mContext!= null) {
+			Method getExtFilesDir;
+			try {
+				/*
+				 * Use indirection to invoke getExternalFilesDir(), this allows us to
+				 * support platforms less than 8.
+				 */
+				getExtFilesDir = Context.class.getMethod("getExternalFilesDir",new Class[] {String.class});
+				/*
+				 * Invoke getExtFilesDir with null argument
+				 */
+				externalStorageDirectory = (File) getExtFilesDir.invoke(mContext,new Object[] {null});
+			}
+			catch (Throwable t) {
+				Log.e(TAG, "Could not execute method getExternalFilesDir() on sdk >=8",t);
+			}
+		}
+		if( externalStorageDirectory != null) {
+			if(!externalStorageDirectory.exists()) {
+				if(!externalStorageDirectory.mkdirs()) {
+					externalStorageDirectory = null;
+					Log.e(TAG, "mkdirs failed on externalStorageDirectory " + externalStorageDirectory);
+				}
+			}
+		}
+		return externalStorageDirectory;
+	}
+	
+	/**
+	 * @return the log file used to log to external storage
+	 */
+	public File getLogFile() {
+		
+		if( mSdCardLogFile == null ) {
+			String externalStorageState = Environment.getExternalStorageState();
+			if(externalStorageState.equals(Environment.MEDIA_MOUNTED)) {
+				File externalStorageDirectory = getExternalStorageDirectory();
+		
+				if (externalStorageDirectory != null) {
+					mSdCardLogFile = new File(externalStorageDirectory, fileName);
+				}
+			}
+			
+			if(mSdCardLogFile == null) {
+				Log.e(TAG, "Unable to open log file from external storage");
+			}
 		}
 
-		return file;
+		return mSdCardLogFile;
 	}
 
 }

@@ -9,8 +9,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import android.test.AndroidTestCase;
+
 import com.google.code.microlog4android.appender.Appender;
-import com.google.code.microlog4android.appender.FileAppender;
+import com.google.code.microlog4android.appender.LogCatAppender;
 import com.google.code.microlog4android.repository.DefaultLoggerRepository;
 
 public class LoggerTest {
@@ -44,17 +46,17 @@ public class LoggerTest {
 
 	@Test
 	public void testAddAppender() {
-		logger.addAppender(new FileAppender());
+		logger.addAppender(new LogCatAppender());
 
 		assertEquals(1, logger.getNumberOfAppenders());
 	}
 
 	@Test
 	public void testAddAppenderDuplicateValue() {
-		FileAppender fileAppender = new FileAppender();
+		LogCatAppender lcAppender = new LogCatAppender();
 
-		logger.addAppender(fileAppender);
-		logger.addAppender(fileAppender);
+		logger.addAppender(lcAppender);
+		logger.addAppender(lcAppender);
 
 		assertEquals(1, logger.getNumberOfAppenders());
 	}
@@ -90,11 +92,11 @@ public class LoggerTest {
 
 	@Test
 	public void testRemoveAllAppenders() {
-		FileAppender fileAppender1 = new FileAppender();
-		FileAppender fileAppender2 = new FileAppender();
+		LogCatAppender lcAppender1 = new LogCatAppender();
+		LogCatAppender lcAppender2 = new LogCatAppender();
 
-		logger.addAppender(fileAppender1);
-		logger.addAppender(fileAppender2);
+		logger.addAppender(lcAppender1);
+		logger.addAppender(lcAppender2);
 
 		logger.removeAllAppenders();
 
