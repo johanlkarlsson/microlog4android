@@ -46,7 +46,7 @@ public class ThrowableFormatCommand implements FormatCommandInterface {
 			for (int i = 0; i < stackTrace.length; i++) {
 				StackTraceElement element = stackTrace[i];
 				sb.append(newline);
-				sb.append("\t");
+				sb.append("\tat ");
 				sb.append(element.toString());
 			}
 		}
