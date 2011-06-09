@@ -38,12 +38,20 @@ public class ThrowableFormatCommand implements FormatCommandInterface {
 	 */
 	public String execute(String clientID, String name, long time, Level level, Object message, Throwable throwable) {
 
-		String throwableMessage = "";
+		StringBuilder sb = new StringBuilder();
 		if (throwable != null) {
-			throwableMessage = throwable.toString();
+			sb.append(throwable.toString());
+			String newline = System.getProperty("line.separator");
+			StackTraceElement[] stackTrace = throwable.getStackTrace();
+			for (int i = 0; i < stackTrace.length; i++) {
+				StackTraceElement element = stackTrace[i];
+				sb.append(newline);
+				sb.append("\tat ");
+				sb.append(element.toString());
+			}
 		}
 
-		return throwableMessage;
+		return sb.toString();
 	}
 
 }
