@@ -74,7 +74,7 @@ public class FileAppender extends AbstractAppender {
 	 * @see com.google.code.microlog4android.appender.AbstractAppender#open()
 	 */
 	@Override
-	public void open() throws IOException {
+	public synchronized void open() throws IOException {
 		File logFile = getLogFile();
 		logOpen = false;
 
@@ -109,7 +109,7 @@ public class FileAppender extends AbstractAppender {
 	 * @see com.google.code.microlog4android.appender.AbstractAppender#close()
 	 */
 	@Override
-	public void close() throws IOException {
+	public synchronized void close() throws IOException {
 		Log.i(TAG, "Closing the FileAppender");
 		if (writer != null) {
 			writer.close();
@@ -122,7 +122,7 @@ public class FileAppender extends AbstractAppender {
 	 *      java.lang.Object, java.lang.Throwable)
 	 */
 	@Override
-	public void doLog(String clientID, String name, long time, Level level,
+	public synchronized void doLog(String clientID, String name, long time, Level level,
 			Object message, Throwable throwable) {
 		if (logOpen && formatter != null && writer != null) {
 			writer.println(formatter.format(clientID, name, time, level,
@@ -184,7 +184,7 @@ public class FileAppender extends AbstractAppender {
 	 * @return a File object representing the external storage directory
 	 * used by this device or null if the subdir could not be created or proven to exist
 	 */
-	protected File getExternalStorageDirectory() {
+	protected synchronized File getExternalStorageDirectory() {
 
 		File externalStorageDirectory = Environment
 			.getExternalStorageDirectory();
@@ -221,7 +221,7 @@ public class FileAppender extends AbstractAppender {
 	/**
 	 * @return the log file used to log to external storage
 	 */
-	public File getLogFile() {
+	public synchronized File getLogFile() {
 		
 		if( mSdCardLogFile == null ) {
 			String externalStorageState = Environment.getExternalStorageState();
