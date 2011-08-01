@@ -59,6 +59,12 @@ public class PropertyConfigurator {
 	public static final String FORMATTER_PREFIX_KEY = "microlog.formatter";
 
 	/**
+	 * The key for setting the pattern.
+	 */
+	public static final String PATTERN_LAYOUT_PREFIX_KEY = "microlog.formatter.PatternFormatter.pattern";
+
+
+	/**
 	 * The key for setting the appender.
 	 */
 	public static final String APPENDER_PREFIX_KEY = "microlog.appender";
@@ -288,7 +294,10 @@ public class PropertyConfigurator {
 			Formatter formatter = (Formatter) formatterClass.newInstance();
 			
 			// TODO Add property setup of the formatter.
-			
+			if(formatter instanceof PatternFormatter){
+				String pattern = (String) properties.getProperty(PATTERN_LAYOUT_PREFIX_KEY, "%r %c{1} [%P] %m %T");
+				((PatternFormatter) formatter).setPattern(pattern);
+			}
 			if(formatter != null){
 				Logger rootLogger = loggerRepository.getRootLogger();
 				
