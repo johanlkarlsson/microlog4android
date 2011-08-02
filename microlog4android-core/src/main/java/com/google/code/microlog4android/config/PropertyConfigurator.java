@@ -223,7 +223,7 @@ public class PropertyConfigurator {
 
 		String appenderString = properties.getProperty(PropertyConfigurator.APPENDER_PREFIX_KEY, "LogCatAppender");
 		List<String> appenderList = parseAppenderString(appenderString);
-		setAppenders(appenderList);
+		setAppenders(appenderList, properties);
 
 		setFormatter(properties);
 	}
@@ -251,13 +251,13 @@ public class PropertyConfigurator {
 		return appenderList;
 	}
 
-	private void setAppenders(List<String> appenderList) {
+	private void setAppenders(List<String> appenderList, Properties properties) {
 		for (String string : appenderList) {
-			addAppender(string);
+			addAppender(string, properties);
 		}
 	}
 
-	private void addAppender(String string) {
+	private void addAppender(String string, Properties properties) {
 
 		Logger rootLogger = loggerRepository.getRootLogger();
 		String className = appenderAliases.get(string);
