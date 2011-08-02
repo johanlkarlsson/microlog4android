@@ -70,6 +70,17 @@ public class PropertyConfigurator {
 	public static final String APPENDER_PREFIX_KEY = "microlog.appender";
 
 	/**
+	 * The key for setting the file name for FileAppender.
+	 */
+	public static final String FILE_APPENDER_FILE_NAME_KEY = "microlog.appender.FileAppender.File";
+
+	/**
+	 * The key for setting the append.
+	 */
+	public static final String FILE_APPENDER_APPEND_KEY = "microlog.appender.FileAppender.Append";
+
+
+	/**
 	 * The key for setting the level.
 	 */
 	public static final String LOG_LEVEL_PREFIX_KEY = "microlog.level";
@@ -260,6 +271,10 @@ public class PropertyConfigurator {
 			Appender appender = (Appender) appenderClass.newInstance();
 
 			if (appender != null) {
+				
+				if(appender instanceof FileAppender)
+					setPropertiesForFileAppender(appender,properties);
+
 				Log.i(TAG, "Adding appender " + appender.getClass().getName());
 				rootLogger.addAppender(appender);
 			}
@@ -273,6 +288,16 @@ public class PropertyConfigurator {
 		} catch (ClassCastException e) {
 			Log.e(TAG, "Specified appender class does not implement the Appender interface: " + e);
 		}
+	}
+
+	private void setPropertiesForFileAppender(Appender appender, Properties properties) {
+			
+			String fileName = (String) properties.getProperty(FILE_APPENDER_FILE_NAME_KEY, "microlog.txt");
+			((FileAppender)appender).setFileName(fileName);
+
+			String append_string = (String) properties.getProperty(FILE_APPENDER_APPEND_KEY, "true");
+			boolean append_bool = Boolean.parseBoolean(append_string);
+			((FileAppender)appender).setAppend(append_bool);
 	}
 
 	private void setFormatter(Properties properties) {
